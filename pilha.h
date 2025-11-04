@@ -5,10 +5,9 @@
 #include <stdlib.h>
 
 typedef struct No{
-
     int valor;
+    struct No* interior;
     struct No* prox;
-
 } No;
 
 typedef struct No* Pilha;

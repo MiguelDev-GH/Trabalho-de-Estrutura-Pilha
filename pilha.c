@@ -17,6 +17,7 @@ void push(Pilha* pi, int valor){
     if(novo == NULL) return;
 
     novo->valor = valor;
+    novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
     else novo->prox = *pi;
@@ -33,6 +34,10 @@ void pop(Pilha* pi){
     *pi = remover->prox;
 
     free(remover);
+
+}
+
+void apagarPilha(Pilha* pi){
 
 }
 
