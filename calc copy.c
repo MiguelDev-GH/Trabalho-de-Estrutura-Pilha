@@ -29,13 +29,15 @@ int percorreEspaço(int indice){
 
     char input_temp[indice_temp];
     int indice_input_temp = 0;
+
     for(int i = indice; i < (indice + indice_temp); i++){
         input_temp[indice_input_temp] = input[i];
         indice_input_temp++;
     }
 
     int num_push = atoi(input_temp);
-    push(*pi,num_push);
+
+    //push(*pi,num_push);
 
     return indice + indice_temp;
 }
@@ -53,40 +55,4 @@ char percorrerAte(int indice){
     }
 
     printf(" <<<");
-}
-
-int main(){
-
-    printf(">>> ");
-
-    fgets(input,sizeof(input),stdin);
-
-    //Ler todo o input
-    // Reconhecer cada caractere {
-    // Pegar o "(", "[" ou "{"
-    // Quando achar o primeiro símbolo, criar uma pilha.
-    // A pilha vai receber o resultado da operação que estiver dentro dela até achar a versão fechada do símbolo.
-
-
-    while(caractere != '\n'){
-
-        printf("%d- %c ",indice,input[indice]);
-
-        if(ehNum(caractere)){
-            indice = (percorreEspaço(indice));
-        }
-
-        if(caractere == '(' || caractere == '[' || caractere == '{'){
-            percorrerAte(indice); 
-        }
-
-        indice++;
-        caractere = input[indice];
-
-        printf("\n");
-
-    }
-
-    return 0;
-
 }

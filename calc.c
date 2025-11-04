@@ -1,30 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-char input[50];
-
-int indice = 0;
-char caractere = 'a';
-
-char Numeros = {'0','1','2','3','4','5','6','7','8','9'} ;
-
-void ehNum(char* c){}
-
-char percorrerAte(int indice){
-
-    printf(">>> ");
-
-    if(caractere == '('){
-
-        for(int i = indice+1; i < sizeof(input);i++){
-            printf(" %c ",input[i]);
-        }
-
-    }
-
-    printf(" <<<");
-}
+#include "calc copy.c"
 
 int main(){
 
@@ -42,6 +16,10 @@ int main(){
     while(caractere != '\n'){
 
         printf("%d- %c ",indice,input[indice]);
+
+        if(ehNum(caractere)){
+            indice = (percorreEspaço(indice));
+        }
 
         if(caractere == '(' || caractere == '[' || caractere == '{'){
             percorrerAte(indice); 
