@@ -1,10 +1,13 @@
 #include "calc copy.c"
 
 int main(){
-
+    char input[50];
+    int indice = 0;
+    Pilha *pi = criarPilha();
     printf(">>> ");
 
     fgets(input,sizeof(input),stdin);
+    char caractere = input[indice];
 
     //Ler todo o input
     // Reconhecer cada caractere {
@@ -15,23 +18,26 @@ int main(){
 
     while(caractere != '\n'){
 
-        printf("%d- %c ",indice,input[indice]);
+        //printf("%d- %c ",indice,input[*indice]);
 
         if(ehNum(caractere)){
-            indice = (percorreEspaço(indice));
+            percorreEspaco(pi,&indice,input);
         }
-
+        /*x
         if(caractere == '(' || caractere == '[' || caractere == '{'){
-            percorrerAte(indice); 
+            percorrerAte(*indice,caractere); 
         }
+        */
 
         indice++;
         caractere = input[indice];
 
-        printf("\n");
+        //printf("\n");
 
     }
 
+    imprimirPilha(pi);
+    
     return 0;
 
 }
