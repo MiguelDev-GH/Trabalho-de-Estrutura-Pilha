@@ -71,6 +71,34 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     if (pi_calc == NULL || *pi_calc == NULL) return; 
     
     No* aux = *pi_calc;
+    while(aux->prox != NULL && aux->prox->prox != NULL){
+        if((aux->prox->simb == '*' || aux->prox->simb == '/') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
+         aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
+
+            No* delete_simb = aux->prox;
+            No* delete_num = aux->prox->prox;     
+
+            if(aux->prox->simb == '*'){
+            aux->valor = aux->valor * aux->prox->prox->valor;
+            }else if(aux->prox->simb == '/'){
+
+             if (aux->prox->prox->valor == 0) {
+                printf("Nao exite divisao por 0");
+                return;
+            }
+            aux->valor = aux->valor / aux->prox->prox->valor;
+            }
+            
+            aux->prox = delete_num->prox;
+
+            free(delete_simb);
+            free(delete_num);
+
+        }else{
+        aux = aux->prox;
+        }
+    }
+    aux = *pi_calc;
 
     while(aux->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL && aux->prox->valor_simb == 1 && aux->prox->prox->valor_simb == 0){
 
@@ -81,17 +109,8 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             aux->valor = aux->valor + aux->prox->prox->valor;
         } else if (aux->prox->simb == '-'){
             aux->valor = aux->valor - aux->prox->prox->valor;
-        } else if (aux->prox->simb == '/'){
-            
-            if (aux->prox->prox->valor == 0) {
-                printf("nao exite divisao por ");
-                return;
-            }
-            aux->valor = aux->valor / aux->prox->prox->valor;
-
-        } else if(aux->prox->simb == '*'){
-            aux->valor = aux->valor * aux->prox->prox->valor;
         }
+
         aux->prox = delete_num->prox;
 
         free(delete_simb);
