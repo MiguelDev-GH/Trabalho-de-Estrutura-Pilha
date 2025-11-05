@@ -21,13 +21,14 @@ int main(){
         //printf("%d- %c ",indice,input[*indice]);
 
         if(ehNum(caractere)){
-            percorreEspaco(pi,&indice,input);
+            addnum(pi,&indice,input);
         }
-        /*x
-        if(caractere == '(' || caractere == '[' || caractere == '{'){
-            percorrerAte(*indice,caractere); 
-        }
-        */
+        if(ehSimbolo(pi,caractere));
+
+
+        if(caractere == '(' || caractere == '[' || caractere == '{');
+            //acharInternos(&indice, caractere, &input[50]);
+
 
         indice++;
         caractere = input[indice];

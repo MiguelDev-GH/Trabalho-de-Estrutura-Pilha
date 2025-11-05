@@ -14,7 +14,18 @@ bool ehNum(char c){
     }
 }
 
-void percorreEspaco(Pilha* pi,int* indice, char input[50]){
+bool ehSimbolo(Pilha* pi, char c){
+    bool retu;
+    if(c == '+'||c == '-'||c == '/'||c == '*'){
+        push_simb(pi,c);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+void addnum(Pilha* pi,int* indice, char input[50]){
     int indice_temp = *indice;
     while(ehNum(input[indice_temp + 1])){
         indice_temp++;
@@ -37,18 +48,21 @@ void percorreEspaco(Pilha* pi,int* indice, char input[50]){
 
     *indice = *indice + indice_temp;
 }
+/*
+void acharInternos(int* indice, char caractere, char *input[50]){
+    int indice_temp = *indice;
+    int operacoesCont = 0;
 
-char percorrerAte(int indice,char caractere, char input[50]){
+    
 
-    printf(">>> ");
-
-    if(caractere == '('){
-
-        for(int i = indice+1; i < sizeof(input[50]);i++){
-            printf(" %c ",input[i]);
+    while(*input[indice_temp + 1] != ')' || *input[indice_temp + 1] != ']' || *input[indice_temp + 1] != '}'){
+        if(*input[indice_temp + 1] == '(' || *input[indice_temp + 1] == '[' || *input[indice_temp + 1] == '{'){
+            acharInternos(&indice_temp, caractere, &input);
         }
-
+        indice_temp++;
     }
 
-    printf(" <<<");
+    *indice = *indice + indice_temp;
 }
+
+*/

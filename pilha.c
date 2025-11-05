@@ -16,7 +16,25 @@ void push(Pilha* pi, int valor){
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
 
+    novo->valor_simb = 0;
     novo->valor = valor;
+    novo->interior = NULL;
+
+    if(*pi == NULL) novo->prox = NULL; 
+    else novo->prox = *pi;
+
+    *pi = novo;
+
+}
+
+void push_simb(Pilha* pi, char simb){
+    if(pi == NULL) return;
+
+    No* novo = malloc(sizeof(No));
+    if(novo == NULL) return;
+
+    novo->valor_simb = 1;
+    novo->simb = simb;
     novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
@@ -37,9 +55,7 @@ void pop(Pilha* pi){
 
 }
 
-void apagarPilha(Pilha* pi){
-
-}
+// void apagarPilha(Pilha* pi){}
 
 void imprimirPilha(Pilha* pi){
 
@@ -49,7 +65,12 @@ void imprimirPilha(Pilha* pi){
 
     while(aux != NULL){
 
-        printf("%d- %d\n",cont,aux->valor);
+        if(aux->valor_simb==0){
+            printf("%d- %d\n",cont,aux->valor);
+        }else{
+            printf("%d- %c\n",cont,aux->simb);
+        }
+        
         cont++;
         aux = aux->prox;
     }

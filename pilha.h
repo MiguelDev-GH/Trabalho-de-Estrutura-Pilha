@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 typedef struct No{
+    int valor_simb;
+    char simb;
     int valor;
     struct No* interior;
     struct No* prox;
@@ -13,7 +15,8 @@ typedef struct No{
 typedef struct No* Pilha;
 
 Pilha* criarPilha();
-void push();
-void imprimirPilha();
+void push(Pilha* pi, int valor);
+void push_simb(Pilha* pi, char simb);
+void imprimirPilha(Pilha* pi);
 
 #endif
