@@ -15,6 +15,8 @@ int main(){
     // Quando achar o primeiro símbolo, criar uma pilha.
     // A pilha vai receber o resultado da operação que estiver dentro dela até achar a versão fechada do símbolo.
 
+    // Se achar parenteses fechando, voltar até onde ele abre e substituir pelo valor da operação
+
 
     while(caractere != '\n'){
 
