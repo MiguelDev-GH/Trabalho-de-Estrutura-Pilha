@@ -1,44 +1,96 @@
-#include "calc copy.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include "pilha.c"
 
-int main(){
-    char input[50];
-    int indice = 0;
-    Pilha *pi = criarPilha();
-    printf(">>> ");
+//pilha *pi = criar_pilha();
 
-    fgets(input,sizeof(input),stdin);
-    char caractere = input[indice];
+bool ehNum(char c){
+    if(c == '0'||c == '1'||c == '2'||c == '3'||c == '4'||c == '5'||c == '6'||c == '7'||c == '8'||c == '9'){
+        return true;
+    }else{
+        return false;
+    }
+}
 
-    //Ler todo o input
-    // Reconhecer cada caractere {
-    // Pegar o "(", "[" ou "{"
-    // Quando achar o primeiro símbolo, criar uma pilha.
-    // A pilha vai receber o resultado da operação que estiver dentro dela até achar a versão fechada do símbolo.
+bool ehSimbolo(Pilha* pi, char c){
+    if(c == '+'||c == '-'||c == '/'||c == '*'){
+        push_simb(pi,c);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool ehAbrido(Pilha* pi, char c){
+    if(c == '('||c == '['||c == '{'){
+        push_simb(pi,c);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool ehFechado(Pilha* pi, char c){
+    if(c == ')' || c == ']' || c == '}'){
+        push_simb(pi,c);
+        return true;
+    }else{
+        return false;
+    }
+}
 
 
-    while(caractere != '\n'){
+void addnum(Pilha* pi,int* indice, char input[50]){
+    int indice_temp = *indice;
+    while(ehNum(input[indice_temp + 1])){
+        indice_temp++;
+    }
+    indice_temp = (*indice) - indice_temp;
 
-        //printf("%d- %c ",indice,input[*indice]);
+    if(indice_temp < 0)indice_temp = indice_temp * (-1);
 
-        if(ehNum(caractere)){
-            addnum(pi,&indice,input);
-        }
-        if(ehSimbolo(pi,caractere));
+    char input_temp[indice_temp + 1];
+    int indice_input_temp = 0;
 
-
-        if(caractere == '(' || caractere == '[' || caractere == '{');
-            //acharInternos(&indice, caractere, &input[50]);
-
-
-        indice++;
-        caractere = input[indice];
-
-        //printf("\n");
-
+    for(int i = *indice; i < (*indice + indice_temp+1); i++){
+        input_temp[indice_input_temp] = input[i];
+        indice_input_temp++;
     }
 
-    imprimirPilha(pi);
-    
-    return 0;
+    int num_push = atoi(input_temp);
 
+    push(pi,num_push);
+
+    *indice = *indice + indice_temp;
+}
+
+void calculo(Pilha* pi, Pilha* pi_calc){
+    if(pi == NULL || pi_calc == NULL) return;
+
+    No* aux = *pi;
+
+    if((*pi)->simb == ')' || (*pi)->simb == ']' || (*pi)->simb == '}'){
+
+        aux = aux->prox;
+
+        while(aux != NULL && aux->simb != '(' && aux->simb != '[' && aux->simb != '{'){
+            if(aux->valor_simb == 0){
+                push(pi_calc,aux->valor);
+            }else if(aux->simb != '(' || aux->simb != '[' || aux->simb != '{'||aux->simb != ')' || aux->simb != ']' || aux->simb != '}'){
+                push_simb(pi_calc,aux->simb);
+            }
+            
+            *pi = (*pi)->prox;
+            No* no_delete = aux;
+            aux = aux->prox;
+            free(no_delete);
+        }
+        
+        No* no_delete = *pi;
+        *pi = (*pi)->prox;
+        free(no_delete);
+        
+    }
 }
