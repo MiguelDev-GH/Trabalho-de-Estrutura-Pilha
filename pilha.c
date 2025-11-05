@@ -77,5 +77,21 @@ void imprimirPilha(Pilha* pi){
 
 }
 
+void imprimirPilhaResultado(Pilha* pi){
+
+    int cont = 1;
+
+    No* aux = *pi;
+
+    while(aux != NULL){
+
+        printf("\nResultado = %d", aux->valor);
+        
+        cont++;
+        aux = aux->prox;
+    }
+
+}
+
 
 // void removerNo(){};

@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #include "pilha.c"
 
-//pilha *pi = criar_pilha();
-
 bool ehNum(char c){
     if(c == '0'||c == '1'||c == '2'||c == '3'||c == '4'||c == '5'||c == '6'||c == '7'||c == '8'||c == '9'){
         return true;
@@ -68,14 +66,52 @@ void addnum(Pilha* pi,int* indice, char input[50]){
     *indice = *indice + indice_temp;
 }
 
-void calculo(Pilha* pi, Pilha* pi_calc){
+void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
+
+    if (pi_calc == NULL || *pi_calc == NULL) return; 
+    
+    No* aux = *pi_calc;
+
+    while(aux->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL && aux->prox->valor_simb == 1 && aux->prox->prox->valor_simb == 0){
+
+        No* delete_simb = aux->prox;
+        No* delete_num = aux->prox->prox;
+
+        if(aux->prox->simb == '+'){
+            aux->valor = aux->valor + aux->prox->prox->valor;
+        } else if (aux->prox->simb == '-'){
+            aux->valor = aux->valor - aux->prox->prox->valor;
+        } else if (aux->prox->simb == '/'){
+            
+            if (aux->prox->prox->valor == 0) {
+                printf("nao exite divisao por ");
+                return;
+            }
+            aux->valor = aux->valor / aux->prox->prox->valor;
+
+        } else if(aux->prox->simb == '*'){
+            aux->valor = aux->valor * aux->prox->prox->valor;
+        }
+        aux->prox = delete_num->prox;
+
+        free(delete_simb);
+        free(delete_num);
+    }
+    if(aux->prox != NULL){
+        printf("tu é burro em pai, sabe nem escrever direito");
+    }else{
+        push(pi,aux->valor);
+        free(aux);
+        *pi_calc = NULL;
+    }
+}
+
+void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
     if(pi == NULL || pi_calc == NULL) return;
 
     No* aux = *pi;
 
     if((*pi)->simb == ')' || (*pi)->simb == ']' || (*pi)->simb == '}'){
-
-        //aux = aux->prox;
 
         while(aux != NULL && aux->simb != '(' && aux->simb != '[' && aux->simb != '{'){
 
@@ -88,41 +124,45 @@ void calculo(Pilha* pi, Pilha* pi_calc){
             
             No* no_delete = aux;
 
+            if((*pi)->prox != NULL){
             *pi = (*pi)->prox;
-        
             aux = aux->prox;
+            }else{
+                *pi = NULL;
+                aux = NULL;
+            }
+
             free(no_delete);
         }
         
         No* no_delete = *pi;
         *pi = (*pi)->prox;
         free(no_delete);
+        calcularPiCalc(pi, pi_calc);
         
-    }
-}
+    }else{
+        while(aux != NULL){
 
-No* calcularPiCalc(Pilha* pi_calc){
+            if(aux->valor_simb == 0){
+                push(pi_calc,aux->valor);
 
-    int resultado = 0;
+            }else if(aux->simb != '(' && aux->simb != '[' && aux->simb != '{' && aux->simb != ')' && aux->simb != ']' && aux->simb != '}'){
+                push_simb(pi_calc,aux->simb);
+            }
+            
+            No* no_delete = aux;
 
-    No* aux = *pi_calc;
-
-    while(aux->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
-
-        if(aux->prox->simb == '+'){
-            resultado = aux->valor + aux->prox->prox->valor;
-        } else if (aux->prox->simb == '-'){
-            resultado = aux->valor - aux->prox->prox->valor;
-        } else if (aux->prox->simb == '/'){
-            resultado = aux->valor / aux->prox->prox->valor;
-        } else if(aux->prox->simb == '*'){
-            resultado = aux->valor * aux->prox->prox->valor;
+            if((*pi)->prox != NULL){
+            *pi = (*pi)->prox;
+            aux = aux->prox;
+            }else{
+                *pi = NULL;
+                aux = NULL;
+            }
+            
+            free(no_delete);
         }
+        
+        calcularPiCalc(pi, pi_calc);
     }
-
-    aux->valor_simb = 0;
-    aux->valor = resultado;
-
-    return aux;
-
 }
