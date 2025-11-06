@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 typedef struct No{
     int valor_simb;
@@ -29,5 +31,6 @@ bool ehFechado(Pilha* pi, char c);
 void addnum(Pilha* pi,int* indice, char input[50]);
 void calcularPiCalc(Pilha* pi,Pilha* pi_calc);
 void InserirPiCalc(Pilha* pi, Pilha* pi_calc);
+void verificacao(Pilha* pi);
 
 #endif

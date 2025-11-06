@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "calc.h"
 
 Pilha* criarPilha(){
@@ -48,13 +44,30 @@ void push_simb(Pilha* pi, char simb){
 
 }
 
-void push_parenteses(Pilha* pi, char simb){
+void push_parentesesAbrido(Pilha* pi, char simb){
     if(pi == NULL) return;
 
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
 
     novo->valor_simb = 2;
+    novo->simb = simb;
+    novo->interior = NULL;
+
+    if(*pi == NULL) novo->prox = NULL; 
+    else novo->prox = *pi;
+
+    *pi = novo;
+
+}
+
+void push_parentesesFechado(Pilha* pi, char simb){
+    if(pi == NULL) return;
+
+    No* novo = malloc(sizeof(No));
+    if(novo == NULL) return;
+
+    novo->valor_simb = 3;
     novo->simb = simb;
     novo->interior = NULL;
 
@@ -115,7 +128,7 @@ void imprimirPilhaResultado(Pilha* pi){
 }
 
 bool ehNum(char c){
-    if(c == '0'||c == '1'||c == '2'||c == '3'||c == '4'||c == '5'||c == '6'||c == '7'||c == '8'||c == '9'){
+    if(c == '0'||c == '1'||c == '2'||c == '3'||c == '4'||c == '5'||c == '6'||c == '7'||c == '8'||c == '9'|| c == '-'){
         return true;
     }else{
         return false;
@@ -133,7 +146,7 @@ bool ehSimbolo(Pilha* pi, char c){
 
 bool ehAbrido(Pilha* pi, char c){
     if(c == '('||c == '['||c == '{'){
-        push_parenteses(pi,c);
+        push_parentesesAbrido(pi,c);
         return true;
     }else{
         return false;
@@ -142,7 +155,7 @@ bool ehAbrido(Pilha* pi, char c){
 
 bool ehFechado(Pilha* pi, char c){
     if(c == ')' || c == ']' || c == '}'){
-        push_parenteses(pi,c);
+        push_parentesesFechado(pi,c);
         return true;
     }else{
         return false;
@@ -159,11 +172,16 @@ bool pop_dos_2_primeiros(Pilha* pi){
         delete = *pi;
         delete_extra = (*pi)->prox;
     }else{
-        printf("EXPRESSAO INVALIDA");
+        printf("EXPRESSAO INVALIDA - Operacao nao aberta corretamente");
+        exit(1);
         return false;
     }
 
-    *pi = delete_extra->prox;
+    if(delete_extra->prox == NULL){
+    *pi = NULL;
+    }else{
+        *pi = delete_extra->prox;
+    }
     free(delete);
     free(delete_extra);
     return true;
@@ -173,7 +191,7 @@ void Caractere_invalido(char c){
     if(c != '0'&&c != '1'&&c != '2'&&c != '3'&&c != '4'&&c != '5'&&c != '6'&&c != '7'&&
         c != '8'&&c != '9'&&c != '('&&c != '['&&c != '{'&&c != ')' && c != ']' && c != '}'&&
         c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' '){
-        printf("EXPRESSAO INVALIDA");
+        printf("EXPRESSAO INVALIDA - Caractere invalido identificado");
         exit(1);
     }
 }
@@ -222,7 +240,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             }else if(aux->prox->simb == '/'){
 
              if (aux->prox->prox->valor == 0) {
-                printf("Nao exite divisao por 0");
+                printf("EXPRESSAO INVALIDA - Nao exite divisao por 0");
                 return;
             }
             aux->valor = aux->valor / aux->prox->prox->valor;
@@ -255,8 +273,20 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
         free(delete_simb);
         free(delete_num);
     }
-    if(aux->prox != NULL){
-        printf("tu é burro em pai, sabe nem escrever direito");
+
+    if(aux->prox != NULL && aux->prox->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 0){
+        if(aux->simb == '-'||aux->simb == '+'){
+            if(aux->simb == '-'){
+                push(pi,(aux->prox->valor));
+                No* delete = aux->prox;
+                free(delete);
+                free(aux);
+            }else{
+                push(pi,(aux->prox->valor));
+            }
+        }else{
+            printf("EXPRESSAO INVALIDA - Multiplicacao ou Divisao sozinha com um numero");
+        }
     }else{
         push(pi,aux->valor);
         free(aux);
@@ -269,26 +299,14 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
 
     No* aux = *pi;
 
-    if((*pi)->simb == ')' || (*pi)->simb == ']' || (*pi)->simb == '}'){
+    if((*pi)->valor_simb == 3){
 
-        while(aux != NULL && aux->simb != '(' && aux->simb != '[' && aux->simb != '{'){
-
-            No* simbProx = aux->prox;
-            if(
-                (simbProx->valor_simb == 1 && (simbProx->prox->valor_simb == 1 || simbProx->prox->valor_simb == 2)) ||
-                (simbProx->valor_simb == 2 && simbProx->prox->valor_simb == 1) ||
-                (simbProx->valor_simb == 0 && simbProx->prox->valor_simb == 0)
-                
-            )
-                {
-                printf("EXPRESSAO INVALIDA!");
-                exit(1);
-            }
-
+        while(aux != NULL && aux->valor_simb == 2){
+        
             if(aux->valor_simb == 0){
                 push(pi_calc,aux->valor);
 
-            }else if(aux->valor_simb != 2){
+            }else if(aux->valor_simb != 2 && aux->valor != 3){
                 push_simb(pi_calc,aux->simb);
             }
             
@@ -313,22 +331,12 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
     }else{
         while(aux != NULL){
 
-            No* simbProx = aux->prox;
-            if(
-                (simbProx->valor_simb == 1 && (simbProx->prox->valor_simb == 1 || simbProx->prox->valor_simb == 2)) ||
-                (simbProx->valor_simb == 2 && simbProx->prox->valor_simb == 1) ||
-                (simbProx->valor_simb == 0 && simbProx->prox->valor_simb == 0)
-            ){
-                printf("EXPRESSAO INVALIDA!");
-                exit(1);
-            }
+                if(aux->valor_simb == 0){
+                    push(pi_calc,aux->valor);
 
-            if(aux->valor_simb == 0){
-                push(pi_calc,aux->valor);
-
-            }else if(aux->valor_simb != 2){
-                push_simb(pi_calc,aux->simb);
-            }
+                }else if(aux->valor_simb != 2 && aux->valor != 3){
+                    push_simb(pi_calc,aux->simb);
+                }
             
             No* no_delete = aux;
 
@@ -344,5 +352,29 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
         }
         
         calcularPiCalc(pi, pi_calc);
+    }
+}
+
+void verificacao(Pilha* pi){
+    if(pi == NULL || *pi == NULL || (*pi)->prox == NULL) return;
+
+    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+    (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
+        printf("EXPRESSAO INVALIDA! - dois numeros em sequencia");
+        exit(1);
+
+    }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
+        printf("EXPRESSAO INVALIDA! - dois simbolos em sequencia");
+        exit(1);
+
+    }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+        (*pi)->valor_simb == 2 &&(*pi)->prox->valor_simb == 1 && (*pi)->prox->prox->valor_simb == 3 ){
+        printf("EXPRESSAO INVALIDA! - simbolo sozinho dentro de um parenteses");
+        exit(1);
+        
+    }else if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->prox == NULL){
+        printf("EXPRESSAO INVALIDA! - simbolo no fim da opercacao");
+        exit(1);
+
     }
 }

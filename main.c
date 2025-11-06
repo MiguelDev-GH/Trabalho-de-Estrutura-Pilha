@@ -26,10 +26,8 @@ int main(){
         if(ehAbrido(pi_verificacao,caractere));
 
         if(ehFechado(pi_verificacao,caractere)){
-            if(!pop_dos_2_primeiros(pi_verificacao)){
-                exit(1);
-            }
-        };
+            pop_dos_2_primeiros(pi_verificacao);
+        }
 
         Caractere_invalido(caractere);
 
@@ -40,7 +38,7 @@ int main(){
     }
 
     if(*pi_verificacao != NULL){
-        printf("EXPRESSAO INVALIDA");
+        printf("EXPRESSAO INVALIDA - Operacao nao fechada corretamente");
         exit(1);
     }else{
         free(pi_verificacao);
@@ -51,22 +49,36 @@ int main(){
 
     while(caractere != '\n'){
 
-        if(ehNum(caractere)) addnum(pi,&indice,input);
+        if(ehNum(caractere)){ addnum(pi,&indice,input);
+            verificacao(pi);
+        }
         
         if(ehSimbolo(pi,caractere)){
-    
+            verificacao(pi);
         };
 
-        if(ehAbrido(pi,caractere));
+        if(ehAbrido(pi,caractere)){
+            verificacao(pi);
+        };
 
-        if(ehFechado(pi,caractere)) InserirPiCalc(pi,pi_calc);
+        if(ehFechado(pi,caractere)){ 
+            verificacao(pi);
+            InserirPiCalc(pi,pi_calc);
+        }
 
         indice++;
         caractere = input[indice];
 
     }
 
+    printf("\n> Pilha: \n");
+    imprimirPilha(pi);
+
+
     InserirPiCalc(pi,pi_calc);
+
+    printf("\n> Pilha Calc: \n");
+    imprimirPilha(pi_calc);
     
     imprimirPilhaResultado(pi);
 
