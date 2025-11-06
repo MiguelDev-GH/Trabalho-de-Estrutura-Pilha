@@ -3,7 +3,7 @@
 ### Integrantes: 
 - João Victor Martins Teixeira
 - Isabela Arques Mota Ferreira
-- Miguel Chagas Maciel
+- Miguel Chagas Maciel *(Líder)*
 - Roberto Righetti Neto
 - Pedro Henrique Nobre Formiga Chaves
 ___
