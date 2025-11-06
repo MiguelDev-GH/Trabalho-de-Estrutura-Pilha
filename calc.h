@@ -17,6 +17,15 @@ typedef struct No* Pilha;
 Pilha* criarPilha();
 void push(Pilha* pi, int valor);
 void push_simb(Pilha* pi, char simb);
+void pop(Pilha* pi);
 void imprimirPilha(Pilha* pi);
+void imprimirPilhaResultado(Pilha* pi);
+bool ehNum(char c);
+bool ehSimbolo(Pilha* pi, char c);
+bool ehAbrido(Pilha* pi, char c);
+bool ehFechado(Pilha* pi, char c);
+void addnum(Pilha* pi,int* indice, char input[50]);
+void calcularPiCalc(Pilha* pi,Pilha* pi_calc);
+void InserirPiCalc(Pilha* pi, Pilha* pi_calc);
 
 #endif
