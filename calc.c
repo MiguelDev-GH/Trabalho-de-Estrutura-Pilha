@@ -25,10 +25,19 @@ void push(Pilha* pi, int valor){
 
     *pi = novo;
 
-    //extra pra usar -
-
     if((*pi)->prox != NULL && (*pi)->prox->simb == '-' && (*pi)->valor_simb == 0){
-        (*pi)->prox->simb = '+';
+
+        No* aux = *pi;
+        while(aux->prox != NULL && aux->valor_simb != 0 && aux->valor_simb != 1){
+            aux = aux->prox;
+        }
+        if(aux->valor_simb == 1){
+            aux = (*pi)->prox;
+            (*pi)->prox = (*pi)->prox->prox;
+            free(aux);
+        }else if(aux->valor_simb == 0){
+            (*pi)->prox->simb = '+';
+        }
         (*pi)->valor = (*pi)->valor * (-1);
     }
 
@@ -203,9 +212,6 @@ void Caractere_invalido(char c){
     }
 }
 
-// Se achar parenteses fechando, voltar até onde ele abre e substituir pelo valor da operação
-
-
 void addnum(Pilha* pi,int* indice, char input[50]){
     int indice_temp = *indice;
     while(ehNum(input[indice_temp + 1])){
@@ -248,6 +254,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
 
              if (aux->prox->prox->valor == 0) {
                 printf("EXPRESSAO INVALIDA - Nao exite divisao por 0");
+                exit(1);
                 return;
             }
             aux->valor = aux->valor / aux->prox->prox->valor;
@@ -271,6 +278,8 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
 
         if(aux->prox->simb == '+'){
             aux->valor = aux->valor + aux->prox->prox->valor;
+        }else if(aux->prox->simb == '-'){
+            aux->valor = aux->valor - aux->prox->prox->valor;
         }
 
         aux->prox = delete_num->prox;
@@ -279,12 +288,22 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
         free(delete_num);
     }
 
-    if(aux->prox != NULL && aux->prox->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 0){
+    if(aux != NULL && aux->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 0){
         if(aux->simb == '+'){
             push(pi,(aux->prox->valor));
-            
+            No* delete = aux->prox;
+            free(aux);
+            free(delete);
+            *pi_calc = NULL;
+        }else if(aux->simb == '-'){
+            push(pi,(aux->prox->valor) * (-1));
+            No* delete = aux->prox;
+            free(aux);
+            free(delete);
+            *pi_calc = NULL;
         }else{
             printf("EXPRESSAO INVALIDA - Multiplicacao ou Divisao sozinha com um numero");
+            exit(1);
         }
     }else{
         push(pi,aux->valor);
@@ -300,12 +319,12 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
 
     if((*pi)->valor_simb == 3){
 
-        while(aux != NULL && aux->valor_simb == 2){
+        while(aux != NULL && aux->valor_simb != 2){
         
             if(aux->valor_simb == 0){
                 push(pi_calc,aux->valor);
 
-            }else if(aux->valor_simb != 2 && aux->valor != 3){
+            }else if(aux->valor_simb == 1){
                 push_simb(pi_calc,aux->simb);
             }
             
@@ -333,7 +352,7 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
                 if(aux->valor_simb == 0){
                     push(pi_calc,aux->valor);
 
-                }else if(aux->valor_simb != 2 && aux->valor != 3){
+                }else if(aux->valor_simb == 1){
                     push_simb(pi_calc,aux->simb);
                 }
             

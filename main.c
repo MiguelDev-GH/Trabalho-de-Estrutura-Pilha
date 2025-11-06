@@ -1,14 +1,5 @@
 #include "calc.c"
 
-/*
-Arrumar:
-
-- Negativos
-- Expressões como 1 + (2)
-
-*/
-
-
 int main(){
     char input[50];
     int indice = 0;
@@ -16,6 +7,7 @@ int main(){
     Pilha *pi = criarPilha();
     Pilha *pi_calc = criarPilha();
     Pilha *pi_verificacao = criarPilha();
+    printf("\nDigite a expressao: \n");
     printf(">>> ");
 
     fgets(input,sizeof(input),stdin);
@@ -71,15 +63,9 @@ int main(){
 
     }
 
-    printf("\n> Pilha: \n");
-    imprimirPilha(pi);
-
-
     InserirPiCalc(pi,pi_calc);
-
-    printf("\n> Pilha Calc: \n");
-    imprimirPilha(pi_calc);
     
+    printf("Expressao escrita de forma CORRETA!\n");
     imprimirPilhaResultado(pi);
 
     return 0;
