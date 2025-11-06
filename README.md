@@ -9,6 +9,9 @@
 ___
 
 ### 🧮 Aplicação prática:
+
+**Calculadora com Validação de Expressão**
+
 Fizemos uma calculadora que consegue resolver expressões inteiras que contenham somente **soma**, **subtração**, **multiplicação** e **divisão**, que leva em consideração prioridades como: Se contém algum parênteses na operação e também multiplicação ou divisão, respeitando a ordem em que se devem ser resolvidos.
 
 ___
