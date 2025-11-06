@@ -48,6 +48,23 @@ void push_simb(Pilha* pi, char simb){
 
 }
 
+void push_parenteses(Pilha* pi, char simb){
+    if(pi == NULL) return;
+
+    No* novo = malloc(sizeof(No));
+    if(novo == NULL) return;
+
+    novo->valor_simb = 2;
+    novo->simb = simb;
+    novo->interior = NULL;
+
+    if(*pi == NULL) novo->prox = NULL; 
+    else novo->prox = *pi;
+
+    *pi = novo;
+
+}
+
 void pop(Pilha* pi){
     if(pi == NULL) return;
 
@@ -69,7 +86,9 @@ void imprimirPilha(Pilha* pi){
 
         if(aux->valor_simb==0){
             printf("%d- %d\n",cont,aux->valor);
-        }else{
+        }else if(aux->valor_simb==1){
+            printf("%d- %c\n",cont,aux->simb);
+        }else if(aux->valor_simb==2){
             printf("%d- %c\n",cont,aux->simb);
         }
         
@@ -103,9 +122,18 @@ bool ehNum(char c){
     }
 }
 
-bool ehSimbolo_ou_Abrido(Pilha* pi, char c){
-    if(c == '+'||c == '-'||c == '/'||c == '*'||c == '('||c == '['||c == '{'){
+bool ehSimbolo(Pilha* pi, char c){
+    if(c == '+'||c == '-'||c == '/'||c == '*'){
         push_simb(pi,c);
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool ehAbrido(Pilha* pi, char c){
+    if(c == '('||c == '['||c == '{'){
+        push_parenteses(pi,c);
         return true;
     }else{
         return false;
@@ -114,10 +142,39 @@ bool ehSimbolo_ou_Abrido(Pilha* pi, char c){
 
 bool ehFechado(Pilha* pi, char c){
     if(c == ')' || c == ']' || c == '}'){
-        push_simb(pi,c);
+        push_parenteses(pi,c);
         return true;
     }else{
         return false;
+    }
+}
+
+bool pop_dos_2_primeiros(Pilha* pi){
+    if(pi==NULL) return false;
+    
+    No* delete;
+    No* delete_extra;
+
+    if(*pi != NULL && (*pi)->prox != NULL){
+        delete = *pi;
+        delete_extra = (*pi)->prox;
+    }else{
+        printf("EXPRESSAO INVALIDA");
+        return false;
+    }
+
+    *pi = delete_extra->prox;
+    free(delete);
+    free(delete_extra);
+    return true;
+}
+
+void Caractere_invalido(char c){
+    if(c != '0'&&c != '1'&&c != '2'&&c != '3'&&c != '4'&&c != '5'&&c != '6'&&c != '7'&&
+        c != '8'&&c != '9'&&c != '('&&c != '['&&c != '{'&&c != ')' && c != ']' && c != '}'&&
+        c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' '){
+        printf("EXPRESSAO INVALIDA");
+        exit(1);
     }
 }
 
@@ -216,10 +273,22 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
 
         while(aux != NULL && aux->simb != '(' && aux->simb != '[' && aux->simb != '{'){
 
+            No* simbProx = aux->prox;
+            if(
+                (simbProx->valor_simb == 1 && (simbProx->prox->valor_simb == 1 || simbProx->prox->valor_simb == 2)) ||
+                (simbProx->valor_simb == 2 && simbProx->prox->valor_simb == 1) ||
+                (simbProx->valor_simb == 0 && simbProx->prox->valor_simb == 0)
+                
+            )
+                {
+                printf("EXPRESSAO INVALIDA!");
+                exit(1);
+            }
+
             if(aux->valor_simb == 0){
                 push(pi_calc,aux->valor);
 
-            }else if(aux->simb != '(' && aux->simb != '[' && aux->simb != '{' && aux->simb != ')' && aux->simb != ']' && aux->simb != '}'){
+            }else if(aux->valor_simb != 2){
                 push_simb(pi_calc,aux->simb);
             }
             
@@ -244,10 +313,20 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
     }else{
         while(aux != NULL){
 
+            No* simbProx = aux->prox;
+            if(
+                (simbProx->valor_simb == 1 && (simbProx->prox->valor_simb == 1 || simbProx->prox->valor_simb == 2)) ||
+                (simbProx->valor_simb == 2 && simbProx->prox->valor_simb == 1) ||
+                (simbProx->valor_simb == 0 && simbProx->prox->valor_simb == 0)
+            ){
+                printf("EXPRESSAO INVALIDA!");
+                exit(1);
+            }
+
             if(aux->valor_simb == 0){
                 push(pi_calc,aux->valor);
 
-            }else if(aux->simb != '(' && aux->simb != '[' && aux->simb != '{' && aux->simb != ')' && aux->simb != ']' && aux->simb != '}'){
+            }else if(aux->valor_simb != 2){
                 push_simb(pi_calc,aux->simb);
             }
             
