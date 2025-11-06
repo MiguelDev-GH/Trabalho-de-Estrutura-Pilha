@@ -1,13 +1,41 @@
-Nome dos integrantes :
-João Victor Martins Teixeira
-Isabela Arques Mota Ferreira
-Miguel Chagas Maciel
-Roberto Righetti Neto
-Pedro Henrique Nobre Formiga Chaves
+# Trabalho de Estrutura de Dados sobre Pilha
 
-ED implementada e a aplicação prática:
-pilha, fizemos uma calculadora que consegue resolver expressoes inteiras que contenham somente soma, subtracao, multiplicacao e divisao, que leva em consideracao prioridades tipo se existe ou nao algum parenteses na expressao ou se existe multiplicacoes ou divisoes,
-que precisam ser resolvidas antes tambem.
+### Integrantes: 
+- João Victor Martins Teixeira
+- Isabela Arques Mota Ferreira
+- Miguel Chagas Maciel
+- Roberto Righetti Neto
+- Pedro Henrique Nobre Formiga Chaves
+___
 
-Instruções claras sobre como compilar e executar o projeto:
-execute o projeto e insira alguma expressao que contenha somente soma, subtracao, multiplicacao e divisao (ex: 13 + 2 * (10 + 2)), e ele vai te devolver o resultado dessa expressao.
+### Aplicação prática:
+Fizemos uma calculadora que consegue resolver expressões inteiras que contenham somente **soma**, **subtração**, **multiplicação** e **divisão**, que leva em consideração prioridades como: Se contém algum parênteses na operação e também multiplicação ou divisão, respeitando a ordem em que se devem ser resolvidos.
+
+___
+
+### Instruções claras sobre como compilar e executar o projeto:
+- Abra o diretório de onde o projeto está localizado na sua máquina e compile o *main.c*
+
+```
+gcc main.c -o main
+```
+
+- Agora execute o novo executável, o *main*
+
+```
+./main
+```
+### Usando a aplicação:
+
+- Quando aberto a aplicação, é apenas necessário escrevar a operação, exemplo:
+
+```
+10 + 5 * (1 + 1)
+```
+
+E então o output será:
+```
+>>> 10 + 5 * (1 + 1)
+
+Resultado = 20
+```
