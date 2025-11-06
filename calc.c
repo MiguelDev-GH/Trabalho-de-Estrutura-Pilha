@@ -25,6 +25,13 @@ void push(Pilha* pi, int valor){
 
     *pi = novo;
 
+    //extra pra usar -
+
+    if((*pi)->prox != NULL && (*pi)->prox->simb == '-' && (*pi)->valor_simb == 0){
+        (*pi)->prox->simb = '+';
+        (*pi)->valor = (*pi)->valor * (-1);
+    }
+
 }
 
 void push_simb(Pilha* pi, char simb){
@@ -128,7 +135,7 @@ void imprimirPilhaResultado(Pilha* pi){
 }
 
 bool ehNum(char c){
-    if(c == '0'||c == '1'||c == '2'||c == '3'||c == '4'||c == '5'||c == '6'||c == '7'||c == '8'||c == '9'|| c == '-'){
+    if(c >= '0' && c <= '9'){
         return true;
     }else{
         return false;
@@ -264,8 +271,6 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
 
         if(aux->prox->simb == '+'){
             aux->valor = aux->valor + aux->prox->prox->valor;
-        } else if (aux->prox->simb == '-'){
-            aux->valor = aux->valor - aux->prox->prox->valor;
         }
 
         aux->prox = delete_num->prox;
@@ -275,15 +280,9 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     }
 
     if(aux->prox != NULL && aux->prox->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 0){
-        if(aux->simb == '-'||aux->simb == '+'){
-            if(aux->simb == '-'){
-                push(pi,(aux->prox->valor));
-                No* delete = aux->prox;
-                free(delete);
-                free(aux);
-            }else{
-                push(pi,(aux->prox->valor));
-            }
+        if(aux->simb == '+'){
+            push(pi,(aux->prox->valor));
+            
         }else{
             printf("EXPRESSAO INVALIDA - Multiplicacao ou Divisao sozinha com um numero");
         }
