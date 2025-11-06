@@ -14,9 +14,7 @@ int main(){
 
         if(ehNum(caractere)) addnum(pi,&indice,input);
         
-        if(ehSimbolo(pi,caractere));
-
-        if(ehAbrido(pi,caractere));
+        if(ehSimbolo_ou_Abrido(pi,caractere));
 
         if(ehFechado(pi,caractere)) InserirPiCalc(pi,pi_calc);
 

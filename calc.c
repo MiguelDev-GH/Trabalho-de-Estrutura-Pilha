@@ -103,17 +103,8 @@ bool ehNum(char c){
     }
 }
 
-bool ehSimbolo(Pilha* pi, char c){
-    if(c == '+'||c == '-'||c == '/'||c == '*'){
-        push_simb(pi,c);
-        return true;
-    }else{
-        return false;
-    }
-}
-
-bool ehAbrido(Pilha* pi, char c){
-    if(c == '('||c == '['||c == '{'){
+bool ehSimbolo_ou_Abrido(Pilha* pi, char c){
+    if(c == '+'||c == '-'||c == '/'||c == '*'||c == '('||c == '['||c == '{'){
         push_simb(pi,c);
         return true;
     }else{
