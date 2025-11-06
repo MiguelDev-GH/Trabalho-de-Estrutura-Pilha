@@ -1,6 +1,6 @@
-# Trabalho de Estrutura de Dados sobre Pilha
+# Trabalho de Estrutura de Dados sobre Pilha 🔋
 
-### Integrantes: 
+### 👤 Integrantes: 
 - João Victor Martins Teixeira
 - Isabela Arques Mota Ferreira
 - Miguel Chagas Maciel *(Líder)*
@@ -8,12 +8,12 @@
 - Pedro Henrique Nobre Formiga Chaves
 ___
 
-### Aplicação prática:
+### 🧮 Aplicação prática:
 Fizemos uma calculadora que consegue resolver expressões inteiras que contenham somente **soma**, **subtração**, **multiplicação** e **divisão**, que leva em consideração prioridades como: Se contém algum parênteses na operação e também multiplicação ou divisão, respeitando a ordem em que se devem ser resolvidos.
 
 ___
 
-### Instruções claras sobre como compilar e executar o projeto:
+### ➡️ Instruções claras sobre como compilar e executar o projeto:
 - Abra o diretório de onde o projeto está localizado na sua máquina e compile o *main.c*
 
 ```
