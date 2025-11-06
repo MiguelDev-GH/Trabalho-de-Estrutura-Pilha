@@ -188,7 +188,7 @@ bool pop_dos_2_primeiros(Pilha* pi){
         delete = *pi;
         delete_extra = (*pi)->prox;
     }else{
-        printf("EXPRESSAO INVALIDA - Operacao nao aberta corretamente");
+        printf("EXPRESSAO INVALIDA - Operacao aberta incorretamente");
         exit(1);
         return false;
     }
