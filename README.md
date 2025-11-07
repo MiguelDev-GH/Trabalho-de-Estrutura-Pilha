@@ -62,7 +62,7 @@ gcc main.c -o main
 ```
 ./main
 ```
-### Usando a aplicação:
+# Usando a aplicação:
 
 - Quando aberto a aplicação, é apenas necessário escrevar a operação, exemplo:
 
@@ -73,6 +73,76 @@ gcc main.c -o main
 E então o output será:
 ```
 >>> 10 + 5 * (1 + 1)
+Expressao escrita de forma CORRETA!
 
 Resultado = 20
+```
+<br>
+
+<img src="https://github.com/user-attachments/assets/78658b04-cfba-49f2-95f4-b0deb8fa9525" width='100px'>
+
+⚠️**OBS:** O tratamento de ```()```, ```[]``` e ```{}``` é feito de forma igual, independente se abre usando 1, se pode fechar usando outro dos 3, **por exemplo**:
+
+```
+>>> 1 + [1 - (1])
+Expressao escrita de forma CORRETA!
+
+Resultado = 1
+```
+
+### Algumas entradas irão ser **INVÁLIDADAS** com os seguintes critérios:
+
+- Se tiver o use de caracteres que o programa não reconhece:
+
+| Exemplo:
+```
+>>> 10 vezes 2 dividido por 5
+EXPRESSAO INVALIDA - Caractere invalido identificado
+```
+
+___
+
+- Se houver 2 operações básicas seguidas
+
+| Exemplo:
+```
+>>> 10 +- 2
+EXPRESSAO INVALIDA! - Dois simbolos em sequencia
+```
+
+___
+
+- Se houver 2 números posicionados seguidamente sem uma operação no meio:
+
+| Exemplo:
+```
+>>> 10 20 + 2
+EXPRESSAO INVALIDA! - Dois numeros em sequencia
+```
+
+___
+
+- Se houver um parêntes, colchetes ou chaves abertos ou fechados de forma incorreta:
+
+| Exemplo:
+```
+>>> 10 (+ 2
+EXPRESSAO INVALIDA - Operacao nao fechada corretamente
+```
+
+ou
+
+```
+>>> 10) - 2
+EXPRESSAO INVALIDA - Operacao aberta incorretamente
+```
+
+___
+
+- Se estiver dividindo com 0:
+
+| Exemplo:
+```
+>>> 10 / 0
+EXPRESSAO INVALIDA - Nao exite divisao por 0 (Zero)
 ```
