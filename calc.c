@@ -253,7 +253,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             }else if(aux->prox->simb == '/'){
 
              if (aux->prox->prox->valor == 0) {
-                printf("EXPRESSAO INVALIDA - Nao exite divisao por 0");
+                printf("EXPRESSAO INVALIDA - Nao exite divisao por 0 (Zero)");
                 exit(1);
                 return;
             }
@@ -376,7 +376,7 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
 void verificacao(Pilha* pi){
     if(pi == NULL || *pi == NULL || (*pi)->prox == NULL) return;
 
-    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+    if(*pi != NULL && (*pi)->prox != NULL &&
     (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
         printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
         exit(1);
