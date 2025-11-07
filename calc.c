@@ -378,20 +378,20 @@ void verificacao(Pilha* pi){
 
     if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
     (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
-        printf("EXPRESSAO INVALIDA! - dois numeros em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
         exit(1);
 
     }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
-        printf("EXPRESSAO INVALIDA! - dois simbolos em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
         exit(1);
 
     }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
         (*pi)->valor_simb == 2 &&(*pi)->prox->valor_simb == 1 && (*pi)->prox->prox->valor_simb == 3 ){
-        printf("EXPRESSAO INVALIDA! - simbolo sozinho dentro de um parenteses");
+        printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro de um parenteses");
         exit(1);
         
     }else if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->prox == NULL){
-        printf("EXPRESSAO INVALIDA! - simbolo no fim da opercacao");
+        printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
         exit(1);
 
     }
