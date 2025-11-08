@@ -152,7 +152,7 @@ bool ehNum(char c){
 }
 
 bool ehSimbolo(Pilha* pi, char c){
-    if(c == '+'||c == '-'||c == '/'||c == '*'){
+    if(c == '+'||c == '-'||c == '/'||c == '*' || c == '^'){
         push_simb(pi,c);
         return true;
     }else{
@@ -206,7 +206,7 @@ bool pop_dos_2_primeiros(Pilha* pi){
 void Caractere_invalido(char c){
     if(c != '0'&&c != '1'&&c != '2'&&c != '3'&&c != '4'&&c != '5'&&c != '6'&&c != '7'&&
         c != '8'&&c != '9'&&c != '('&&c != '['&&c != '{'&&c != ')' && c != ']' && c != '}'&&
-        c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' '){
+        c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' ' && c != '^'){
         printf("EXPRESSAO INVALIDA - Caractere invalido identificado");
         exit(1);
     }
@@ -242,22 +242,28 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     
     No* aux = *pi_calc;
     while(aux->prox != NULL && aux->prox->prox != NULL){
-        if((aux->prox->simb == '*' || aux->prox->simb == '/') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
+        if((aux->prox->simb == '*' || aux->prox->simb == '/' || aux->prox->simb == '^') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
          aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
 
             No* delete_simb = aux->prox;
             No* delete_num = aux->prox->prox;     
 
-            if(aux->prox->simb == '*'){
-            aux->valor = aux->valor * aux->prox->prox->valor;
+
+            if(aux->prox->simb == '^'){
+                aux->valor = (int)pow((double)aux->valor, (double)aux->prox->prox->valor);
+                if(aux->prox->prox->valor == 0) aux->valor = 1;
+
+            }else if(aux->prox->simb == '*'){
+                aux->valor = aux->valor * aux->prox->prox->valor;
             }else if(aux->prox->simb == '/'){
 
-             if (aux->prox->prox->valor == 0) {
-                printf("EXPRESSAO INVALIDA - Nao exite divisao por 0");
-                exit(1);
-                return;
-            }
-            aux->valor = aux->valor / aux->prox->prox->valor;
+                if (aux->prox->prox->valor == 0) {
+                    printf("EXPRESSAO INVALIDA - Nao exite divisao por 0");
+                    exit(1);
+                }
+
+                aux->valor = aux->valor / aux->prox->prox->valor;
+
             }
             
             aux->prox = delete_num->prox;
@@ -302,7 +308,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             free(delete);
             *pi_calc = NULL;
         }else{
-            printf("EXPRESSAO INVALIDA - Multiplicacao ou Divisao sozinha com um numero");
+            printf("EXPRESSAO INVALIDA - Multiplicacao, Divisao ou Potenciacao sozinha com um numero");
             exit(1);
         }
     }else{
@@ -376,23 +382,21 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
 void verificacao(Pilha* pi){
     if(pi == NULL || *pi == NULL || (*pi)->prox == NULL) return;
 
-    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
-    (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
+    if((*pi)->prox->prox != NULL && (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
         printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
         exit(1);
 
-    }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
+    }else if((*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
         printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
         exit(1);
 
-    }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+    }else if((*pi)->prox->prox != NULL &&
         (*pi)->valor_simb == 2 &&(*pi)->prox->valor_simb == 1 && (*pi)->prox->prox->valor_simb == 3 ){
         printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro de um parenteses");
         exit(1);
         
-    }else if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->prox == NULL){
+    }else if((*pi)->valor_simb == 1 && (*pi)->prox == NULL){
         printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
         exit(1);
-
     }
 }
