@@ -193,6 +193,22 @@ bool pop_dos_2_primeiros(Pilha* pi){
         return false;
     }
 
+    if(delete->simb == ')'&&delete_extra->simb != '('){
+        printf("EXPRESSAO INVALIDA - Operacao com simbolos incorretos %c != %c",delete_extra->simb,delete->simb);
+        exit(1);
+        return false;
+    
+    }else if(delete->simb == ']'&&delete_extra->simb != '['){
+        printf("EXPRESSAO INVALIDA - Operacao com simbolos incorretos %c != %c",delete_extra->simb,delete->simb);
+        exit(1);
+        return false;
+    }else if(delete->simb == '}'&&delete_extra->simb != '{'){
+        printf("EXPRESSAO INVALIDA - Operacao com simbolos incorretos %c != %c",delete_extra->simb,delete->simb);
+        exit(1);
+        return false;
+    }
+        
+
     if(delete_extra->prox == NULL){
     *pi = NULL;
     }else{
