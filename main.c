@@ -1,4 +1,4 @@
-#include "calc.c"
+#include "calcassist.c"
 
 int main(){
     char input[50];
