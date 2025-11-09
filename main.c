@@ -1,4 +1,4 @@
-#include "calcassist.c"
+#include "calc.c"
 
 int main(){
     char input[50];
@@ -41,17 +41,18 @@ int main(){
 
     while(caractere != '\n'){
 
-        if(ehNum(caractere)){ addnum(pi,&indice,input);
+        if(ehNum(caractere)){ 
+            addnum(pi,&indice,input);
             verificacao(pi);
         }
         
         if(ehSimbolo(pi,caractere)){
             verificacao(pi);
-        };
+        }
 
         if(ehAbrido(pi,caractere)){
             verificacao(pi);
-        };
+        }
 
         if(ehFechado(pi,caractere)){ 
             verificacao(pi);

@@ -414,6 +414,5 @@ void verificacao(Pilha* pi){
     }else if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->prox == NULL){
         printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
         exit(1);
-
     }
 }
