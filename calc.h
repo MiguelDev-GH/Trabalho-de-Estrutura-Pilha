@@ -10,7 +10,7 @@
 typedef struct No{
     int valor_simb;
     char simb;
-    int valor;
+    float valor;
     struct No* interior;
     struct No* prox;
 } No;
@@ -18,7 +18,7 @@ typedef struct No{
 typedef struct No* Pilha;
 
 Pilha* criarPilha();
-void push(Pilha* pi, int valor);
+void push(Pilha* pi, float valor);
 void push_simb(Pilha* pi, char simb);
 void pop(Pilha* pi);
 bool pop_dos_2_primeiros(Pilha* pi);

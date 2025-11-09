@@ -10,7 +10,7 @@ Pilha* criarPilha(){
 
 }
 
-void push(Pilha* pi, int valor){
+void push(Pilha* pi, float valor){
     if(pi == NULL) return;
 
     No* novo = malloc(sizeof(No));
@@ -114,10 +114,12 @@ void imprimirPilha(Pilha* pi){
     while(aux != NULL){
 
         if(aux->valor_simb==0){
-            printf("%d- %d\n",cont,aux->valor);
+            printf("%d- %.2f\n",cont,aux->valor);
         }else if(aux->valor_simb==1){
             printf("%d- %c\n",cont,aux->simb);
         }else if(aux->valor_simb==2){
+            printf("%d- %c\n",cont,aux->simb);
+        }else if(aux->valor_simb==3){
             printf("%d- %c\n",cont,aux->simb);
         }
         
@@ -135,7 +137,7 @@ void imprimirPilhaResultado(Pilha* pi){
 
     while(aux != NULL){
 
-        printf("\nResultado = %d", aux->valor);
+        printf("\nResultado = %.2f", aux->valor);
         
         cont++;
         aux = aux->prox;
@@ -411,7 +413,11 @@ void verificacao(Pilha* pi){
         printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro de um parenteses");
         exit(1);
         
-    }else if(*pi != NULL && (*pi)->valor_simb == 1){
+    }
+}
+
+void verificacao_simbolo_no_final(Pilha* pi){
+    if(*pi != NULL && (*pi)->valor_simb == 1){
         printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
         exit(1);
     }

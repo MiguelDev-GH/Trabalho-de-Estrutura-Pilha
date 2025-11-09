@@ -63,6 +63,8 @@ int main(){
         caractere = input[indice];
 
     }
+
+    verificacao_simbolo_no_final(pi);
     
     InserirPiCalc(pi,pi_calc);
     
