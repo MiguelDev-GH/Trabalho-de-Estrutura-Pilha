@@ -63,7 +63,7 @@ int main(){
         caractere = input[indice];
 
     }
-
+    
     InserirPiCalc(pi,pi_calc);
     
     printf("Expressao escrita de forma CORRETA!\n");

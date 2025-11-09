@@ -411,7 +411,7 @@ void verificacao(Pilha* pi){
         printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro de um parenteses");
         exit(1);
         
-    }else if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->prox == NULL){
+    }else if(*pi != NULL && (*pi)->valor_simb == 1){
         printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
         exit(1);
     }
