@@ -24,6 +24,22 @@ void push(Pilha* pi, float valor){
 
     *pi = novo;
 
+}
+
+void push_menos(Pilha* pi, float valor){
+    if(pi == NULL) return;
+
+    No* novo = malloc(sizeof(No));
+    if(novo == NULL) return;
+
+    novo->valor_simb = 0;
+    novo->valor = valor;
+
+    if(*pi == NULL) novo->prox = NULL; 
+    else novo->prox = *pi;
+
+    *pi = novo;
+
     if((*pi)->prox != NULL && (*pi)->prox->simb == '-' && (*pi)->valor_simb == 0){
 
         No* aux = *pi;
@@ -229,17 +245,17 @@ void Caractere_invalido(char c){
         exit(1);
     }
 }
-
+/*
 void addnum(Pilha* pi,int* indice, char input[50]){
-    int indice_temp = *indice;
-    while(ehNum(input[indice_temp + 1])){
-        indice_temp++;
+    int indice_final = *indice;
+    while(ehNum(input[indice_final + 1])){
+        indice_final++;
     }
-    indice_temp = (*indice) - indice_temp;
+    indice_final = (*indice) - indice_temp;
 
-    if(indice_temp < 0)indice_temp = indice_temp * (-1);
+    if(indice_final < 0)indice_final = indice_final * (-1);
 
-    char input_temp[indice_temp + 1];
+    char input_temp[indice_final + 1];
     int indice_input_temp = 0;
 
     for(int i = *indice; i < (*indice + indice_temp+1); i++){
@@ -247,11 +263,60 @@ void addnum(Pilha* pi,int* indice, char input[50]){
         indice_input_temp++;
     }
 
+    int indice_prox = indice_temp + 1;
+    while(input[indice_prox] == ' '){
+        indice_prox++;
+    }
+    char caractere_prox = input[indice_prox];
     int num_push = atoi(input_temp);
 
-    push(pi,num_push);
+    if(caractere_prox == '^'){
+        push(pi,num_push);
+    }else{
+        push_menos(pi,num_push);
+    }
 
     *indice = *indice + indice_temp;
+}
+    */
+void addnum(Pilha* pi, int* indice, char input[50]) {
+    int indice_inicio = *indice;        // Salva o índice inicial
+    int indice_ultimo_digito = *indice; // Guarda o índice do último dígito
+
+    // 1. Encontra o índice do último dígito do número
+    while (ehNum(input[indice_ultimo_digito + 1])) {
+        indice_ultimo_digito++;
+    }
+
+    // 2. Extrai o número para 'input_temp'
+    int num_len = (indice_ultimo_digito - indice_inicio) + 1; // Calcula o comprimento
+    char input_temp[num_len + 1]; // Cria espaço (comprimento + 1 para o '\0')
+    int indice_input_temp = 0;
+
+    for (int i = indice_inicio; i <= indice_ultimo_digito; i++) {
+        input_temp[indice_input_temp] = input[i];
+        indice_input_temp++;
+    }
+    input_temp[indice_input_temp] = '\0'; // <-- FIX 1: Adiciona o terminador nulo
+
+    int num_push = atoi(input_temp); // Agora o atoi é seguro
+
+    // 3. Espia o próximo caractere *depois* do último dígito
+    int indice_prox = indice_ultimo_digito + 1; // Começa a procurar *após* o número
+    while (input[indice_prox] == ' ') { // Pula todos os espaços
+        indice_prox++;
+    }
+    char caractere_prox = input[indice_prox]; // Este é o caractere que queremos (ex: '^')
+
+    // 4. Decide qual função 'push' usar
+    if (caractere_prox == '^') {
+        push(pi, num_push);
+    } else {
+        push_menos(pi, num_push);
+    }
+
+    // 5. Atualiza o índice principal para o último dígito lido
+    *indice = indice_ultimo_digito;
 }
 
 void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
@@ -268,7 +333,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             No* delete_num = aux->prox->prox;     
 
             if(aux->prox->simb == '^'){ 
-                aux->valor = (int)(pow((double)aux->valor,(double)aux->prox->prox->valor) + 0.1);
+                aux->valor = pow((double)aux->valor,(double)aux->prox->prox->valor);
             }
             
             aux->prox = delete_num->prox;

@@ -38,10 +38,11 @@ int main(){
 
     indice = 0;
     caractere = input[indice];
-
+    
     while(caractere != '\n'){
 
-        if(ehNum(caractere)){ 
+        if(ehNum(caractere)){
+
             addnum(pi,&indice,input);
             verificacao(pi);
         }

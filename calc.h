@@ -18,6 +18,7 @@ typedef struct No* Pilha;
 
 Pilha* criarPilha();
 void push(Pilha* pi, float valor);
+void push_menos(Pilha* pi, float valor);
 void push_simb(Pilha* pi, char simb);
 void pop(Pilha* pi);
 bool pop_dos_2_primeiros(Pilha* pi);
@@ -32,5 +33,7 @@ void addnum(Pilha* pi,int* indice, char input[50]);
 void calcularPiCalc(Pilha* pi,Pilha* pi_calc);
 void InserirPiCalc(Pilha* pi, Pilha* pi_calc);
 void verificacao(Pilha* pi);
+void verificacao_simbolo_no_final(Pilha* pi);
+void verificacao_simbolo_sozinho_em_parenteses(Pilha* pi);
 
 #endif
