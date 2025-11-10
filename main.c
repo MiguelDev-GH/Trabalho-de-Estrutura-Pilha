@@ -6,6 +6,7 @@ int main(){
     int indice_prox = 1;
     Pilha *pi = criarPilha();
     Pilha *pi_calc = criarPilha();
+    Pilha *pi_calc_raiz = criarPilha();
     Pilha *pi_verificacao = criarPilha();
     printf("\nDigite a expressao: \n");
     printf(">>> ");
@@ -15,9 +16,8 @@ int main(){
 
     while(caractere != '\n'){
         
-        if(ehAbrido(pi_verificacao,caractere));
-
-        if(ehFechado(pi_verificacao,caractere)){
+        if(ehAbrido(pi_verificacao,caractere)){     
+        }else if(ehFechado(pi_verificacao,caractere)){
             pop_dos_2_primeiros(pi_verificacao);
         }
 
@@ -38,25 +38,19 @@ int main(){
 
     indice = 0;
     caractere = input[indice];
-    
+
     while(caractere != '\n'){
 
         if(ehNum(caractere)){
 
             addnum(pi,&indice,input);
             verificacao(pi);
-        }
-        
-        if(ehSimbolo(pi,caractere)){
+        }else if(ehSimbolo(pi,caractere)){
             verificacao(pi);
-        }
-
-        if(ehAbrido(pi,caractere)){
+        }else if(ehAbrido(pi,caractere)){
             verificacao(pi);
-        }
-
-        if(ehFechado(pi,caractere)){ 
-            verificacao_simbolo_sozinho_em_parenteses(pi);
+        }else if(ehFechado(pi,caractere)){ 
+            
             verificacao(pi);
             InserirPiCalc(pi,pi_calc);
         }

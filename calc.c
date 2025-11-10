@@ -58,49 +58,13 @@ void push_menos(Pilha* pi, float valor){
 
 }
 
-void push_simb(Pilha* pi, char simb){
+void push_simb(Pilha* pi, char simb, int valor_simb){
     if(pi == NULL) return;
 
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
 
-    novo->valor_simb = 1;
-    novo->simb = simb;
-
-    if(*pi == NULL) novo->prox = NULL; 
-    else novo->prox = *pi;
-
-    *pi = novo;
-
-}
-
-void push_parentesesAbrido(Pilha* pi, char simb){
-    if(pi == NULL) return;
-
-    No* novo = malloc(sizeof(No));
-    if(novo == NULL) return;
-
-    novo->valor_simb = 2;
-    novo->simb = simb;
-
-    if(*pi == NULL) novo->prox = NULL; 
-    else novo->prox = *pi;
-
-    *pi = novo;
-
-    if((*pi)->simb == '^'){
-
-    }
-
-}
-
-void push_parentesesFechado(Pilha* pi, char simb){
-    if(pi == NULL) return;
-
-    No* novo = malloc(sizeof(No));
-    if(novo == NULL) return;
-
-    novo->valor_simb = 3;
+    novo->valor_simb = valor_simb;
     novo->simb = simb;
 
     if(*pi == NULL) novo->prox = NULL; 
@@ -171,7 +135,7 @@ bool ehNum(char c){
 
 bool ehSimbolo(Pilha* pi, char c){
     if(c == '+'||c == '-'||c == '/' || c == '*' || c == '^'){
-        push_simb(pi,c);
+        push_simb(pi,c,1);
         return true;
     }else{
         return false;
@@ -180,7 +144,7 @@ bool ehSimbolo(Pilha* pi, char c){
 
 bool ehAbrido(Pilha* pi, char c){
     if(c == '('||c == '['||c == '{'){
-        push_parentesesAbrido(pi,c);
+        push_simb(pi,c,2);
         return true;
     }else{
         return false;
@@ -189,13 +153,22 @@ bool ehAbrido(Pilha* pi, char c){
 
 bool ehFechado(Pilha* pi, char c){
     if(c == ')' || c == ']' || c == '}'){
-        push_parentesesFechado(pi,c);
+        push_simb(pi,c,3);
         return true;
     }else{
         return false;
     }
 }
-
+/*
+bool ehRaiz(Pilha* pi,char c){
+    if(c >= 'r' || c <= 'R'){
+        push_simb(pi,c,4);
+        return true;
+    }else{
+        return false;
+    }
+}
+*/
 bool pop_dos_2_primeiros(Pilha* pi){
     if(pi==NULL) return false;
     
@@ -240,82 +213,44 @@ bool pop_dos_2_primeiros(Pilha* pi){
 void Caractere_invalido(char c){
     if(c != '0'&&c != '1'&&c != '2'&&c != '3'&&c != '4'&&c != '5'&&c != '6'&&c != '7'&&
         c != '8'&&c != '9'&&c != '('&&c != '['&&c != '{'&&c != ')' && c != ']' && c != '}'&&
-        c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' ' && c != '^'){
+        c != '+'&&c != '-'&&c != '/'&&c != '*'&&c != ' ' && c != '^'&& c != 'r'){
         printf("EXPRESSAO INVALIDA - Caractere invalido identificado");
         exit(1);
     }
 }
-/*
-void addnum(Pilha* pi,int* indice, char input[50]){
-    int indice_final = *indice;
-    while(ehNum(input[indice_final + 1])){
-        indice_final++;
-    }
-    indice_final = (*indice) - indice_temp;
 
-    if(indice_final < 0)indice_final = indice_final * (-1);
-
-    char input_temp[indice_final + 1];
-    int indice_input_temp = 0;
-
-    for(int i = *indice; i < (*indice + indice_temp+1); i++){
-        input_temp[indice_input_temp] = input[i];
-        indice_input_temp++;
-    }
-
-    int indice_prox = indice_temp + 1;
-    while(input[indice_prox] == ' '){
-        indice_prox++;
-    }
-    char caractere_prox = input[indice_prox];
-    int num_push = atoi(input_temp);
-
-    if(caractere_prox == '^'){
-        push(pi,num_push);
-    }else{
-        push_menos(pi,num_push);
-    }
-
-    *indice = *indice + indice_temp;
-}
-    */
 void addnum(Pilha* pi, int* indice, char input[50]) {
-    int indice_inicio = *indice;        // Salva o índice inicial
-    int indice_ultimo_digito = *indice; // Guarda o índice do último dígito
+    int indice_inicio = *indice;
+    int indice_ultimo_digito = *indice;
 
-    // 1. Encontra o índice do último dígito do número
     while (ehNum(input[indice_ultimo_digito + 1])) {
         indice_ultimo_digito++;
     }
 
-    // 2. Extrai o número para 'input_temp'
-    int num_len = (indice_ultimo_digito - indice_inicio) + 1; // Calcula o comprimento
-    char input_temp[num_len + 1]; // Cria espaço (comprimento + 1 para o '\0')
+    int num_len = (indice_ultimo_digito - indice_inicio) + 1;
+    char input_temp[num_len];
     int indice_input_temp = 0;
 
     for (int i = indice_inicio; i <= indice_ultimo_digito; i++) {
         input_temp[indice_input_temp] = input[i];
         indice_input_temp++;
     }
-    input_temp[indice_input_temp] = '\0'; // <-- FIX 1: Adiciona o terminador nulo
+    
 
-    int num_push = atoi(input_temp); // Agora o atoi é seguro
+    int num_push = atoi(input_temp);
 
-    // 3. Espia o próximo caractere *depois* do último dígito
-    int indice_prox = indice_ultimo_digito + 1; // Começa a procurar *após* o número
-    while (input[indice_prox] == ' ') { // Pula todos os espaços
+    int indice_prox = indice_ultimo_digito + 1;
+    while (input[indice_prox] == ' ') {
         indice_prox++;
     }
-    char caractere_prox = input[indice_prox]; // Este é o caractere que queremos (ex: '^')
+    char caractere_prox = input[indice_prox]; 
 
-    // 4. Decide qual função 'push' usar
     if (caractere_prox == '^') {
         push(pi, num_push);
     } else {
         push_menos(pi, num_push);
     }
 
-    // 5. Atualiza o índice principal para o último dígito lido
     *indice = indice_ultimo_digito;
 }
 
@@ -435,7 +370,7 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
                 push(pi_calc,aux->valor);
 
             }else if(aux->valor_simb == 1){
-                push_simb(pi_calc,aux->simb);
+                push_simb(pi_calc,aux->simb,1);
             }
             
             No* no_delete = aux;
@@ -463,7 +398,7 @@ void InserirPiCalc(Pilha* pi, Pilha* pi_calc){
                     push(pi_calc,aux->valor);
 
                 }else if(aux->valor_simb == 1){
-                    push_simb(pi_calc,aux->simb);
+                    push_simb(pi_calc,aux->simb,1);
                 }
             
             No* no_delete = aux;
@@ -510,11 +445,3 @@ void verificacao_simbolo_no_final(Pilha* pi){
     }
 }
 
-
-void verificacao_simbolo_sozinho_em_parenteses(Pilha* pi){
-    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
-     (*pi)->valor_simb == 3 && (*pi)->prox->valor_simb == 1&& (*pi)->prox->prox->valor_simb == 2){
-        printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro do parenteses");
-        exit(1);
-    }
-}
