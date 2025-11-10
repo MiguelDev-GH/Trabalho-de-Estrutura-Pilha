@@ -55,6 +55,7 @@ int main(){
         }
 
         if(ehFechado(pi,caractere)){ 
+            verificacao_simbolo_sozinho_em_parenteses(pi);
             verificacao(pi);
             InserirPiCalc(pi,pi_calc);
         }

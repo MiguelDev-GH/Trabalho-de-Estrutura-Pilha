@@ -72,6 +72,10 @@ void push_parentesesAbrido(Pilha* pi, char simb){
 
     *pi = novo;
 
+    if((*pi)->simb == '^'){
+
+    }
+
 }
 
 void push_parentesesFechado(Pilha* pi, char simb){
@@ -255,6 +259,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     if (pi_calc == NULL || *pi_calc == NULL) return; 
     
     No* aux = *pi_calc;
+
     while(aux->prox != NULL && aux->prox->prox != NULL) {
         if(aux->prox->simb == '^' && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
          aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
@@ -436,6 +441,15 @@ void verificacao(Pilha* pi){
 void verificacao_simbolo_no_final(Pilha* pi){
     if(*pi != NULL && (*pi)->valor_simb == 1){
         printf("EXPRESSAO INVALIDA! - Simbolo no fim da opercacao");
+        exit(1);
+    }
+}
+
+
+void verificacao_simbolo_sozinho_em_parenteses(Pilha* pi){
+    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+     (*pi)->valor_simb == 3 && (*pi)->prox->valor_simb == 1&& (*pi)->prox->prox->valor_simb == 2){
+        printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro do parenteses");
         exit(1);
     }
 }
