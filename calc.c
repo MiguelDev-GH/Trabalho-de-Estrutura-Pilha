@@ -260,7 +260,30 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     
     No* aux = *pi_calc;
     while(aux->prox != NULL && aux->prox->prox != NULL) {
-        if((aux->prox->simb == '*' || aux->prox->simb == '/' || aux->prox->simb == '^') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
+        if(aux->prox->simb == '^' && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
+         aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
+
+            No* delete_simb = aux->prox;
+            No* delete_num = aux->prox->prox;     
+
+            if(aux->prox->simb == '^'){ 
+                aux->valor = (int)(pow((double)aux->valor,(double)aux->prox->prox->valor) + 0.1);
+            }
+            
+            aux->prox = delete_num->prox;
+
+            free(delete_simb);
+            free(delete_num);
+
+        }else{
+        aux = aux->prox;
+        }
+    }
+
+    aux = *pi_calc;
+    
+    while(aux->prox != NULL && aux->prox->prox != NULL) {
+        if((aux->prox->simb == '*' || aux->prox->simb == '/') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
          aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
 
             No* delete_simb = aux->prox;
@@ -279,8 +302,6 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
 
                 aux->valor = aux->valor / aux->prox->prox->valor;
 
-            } else if(aux->prox->simb == '^'){ 
-                aux->valor = (int)(pow((double)aux->valor,(double)aux->prox->prox->valor) + 0.1);
             }
             
             aux->prox = delete_num->prox;
