@@ -18,7 +18,6 @@ void push(Pilha* pi, float valor){
 
     novo->valor_simb = 0;
     novo->valor = valor;
-    novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
     else novo->prox = *pi;
@@ -51,7 +50,6 @@ void push_simb(Pilha* pi, char simb){
 
     novo->valor_simb = 1;
     novo->simb = simb;
-    novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
     else novo->prox = *pi;
@@ -68,7 +66,6 @@ void push_parentesesAbrido(Pilha* pi, char simb){
 
     novo->valor_simb = 2;
     novo->simb = simb;
-    novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
     else novo->prox = *pi;
@@ -85,7 +82,6 @@ void push_parentesesFechado(Pilha* pi, char simb){
 
     novo->valor_simb = 3;
     novo->simb = simb;
-    novo->interior = NULL;
 
     if(*pi == NULL) novo->prox = NULL; 
     else novo->prox = *pi;

@@ -11,7 +11,6 @@ typedef struct No{
     int valor_simb;
     char simb;
     float valor;
-    struct No* interior;
     struct No* prox;
 } No;
 
