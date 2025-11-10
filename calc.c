@@ -134,7 +134,7 @@ bool ehNum(char c){
 }
 
 bool ehSimbolo(Pilha* pi, char c){
-    if(c == '+'||c == '-'||c == '/' || c == '*' || c == '^'){
+    if(c == '+'||c == '-'||c == '/' || c == '*' || c == '^' || c == 'r'){
         push_simb(pi,c,1);
         return true;
     }else{
@@ -245,7 +245,7 @@ void addnum(Pilha* pi, int* indice, char input[50]) {
     }
     char caractere_prox = input[indice_prox]; 
 
-    if (caractere_prox == '^') {
+    if (caractere_prox == '^' || caractere_prox == 'r') {
         push(pi, num_push);
     } else {
         push_menos(pi, num_push);
@@ -261,7 +261,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     No* aux = *pi_calc;
 
     while(aux->prox != NULL && aux->prox->prox != NULL) {
-        if(aux->prox->simb == '^' && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
+        if((aux->prox->simb == '^' || aux->prox->simb == 'r') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
          aux->prox->prox->valor_simb == 0 && aux->prox != NULL && aux->prox->prox != NULL){
 
             No* delete_simb = aux->prox;
@@ -269,6 +269,8 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
 
             if(aux->prox->simb == '^'){ 
                 aux->valor = pow((double)aux->valor,(double)aux->prox->prox->valor);
+            } else if(aux->prox->simb == 'r'){
+                aux->valor = pow((double)aux->valor,1/(double)aux->prox->prox->valor);
             }
             
             aux->prox = delete_num->prox;
