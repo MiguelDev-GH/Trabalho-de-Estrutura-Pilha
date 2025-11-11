@@ -34,7 +34,9 @@ void addnum(Pilha* pi,int* indice, char input[50]);
 void calcularPiCalc(Pilha* pi,Pilha* pi_calc);
 void InserirPiCalc(Pilha* pi, Pilha* pi_calc);
 void verificacao(Pilha* pi);
+void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
-void verificacao_simbolo_sozinho_em_parenteses(Pilha* pi);
+void verificacao_loop(Pilha* pi);
+
 
 #endif

@@ -6,19 +6,20 @@ int main(){
     int indice_prox = 1;
     Pilha *pi = criarPilha();
     Pilha *pi_calc = criarPilha();
-    Pilha *pi_calc_raiz = criarPilha();
     Pilha *pi_verificacao = criarPilha();
     printf("\nDigite a expressao: \n");
     printf(">>> ");
 
     fgets(input,sizeof(input),stdin);
     char caractere = input[indice];
-
+    int existe_num = 0;
     while(caractere != '\n'){
         
         if(ehAbrido(pi_verificacao,caractere)){     
         }else if(ehFechado(pi_verificacao,caractere)){
             pop_dos_2_primeiros(pi_verificacao);
+        }else if(ehNum(caractere)){
+            existe_num = 1;
         }
 
         Caractere_invalido(caractere);
@@ -27,6 +28,11 @@ int main(){
         indice_prox++;
         caractere = input[indice];
 
+    }
+
+    if(existe_num == 0){
+        printf("EXPRESSAO INVALIDA - nenhum numero existente");
+        exit(1);
     }
 
     if(*pi_verificacao != NULL){
@@ -50,7 +56,7 @@ int main(){
         }else if(ehAbrido(pi,caractere)){
             verificacao(pi);
         }else if(ehFechado(pi,caractere)){ 
-            
+            verificacao_simbolo_sozinho(pi);
             verificacao(pi);
             InserirPiCalc(pi,pi_calc);
         }
@@ -59,6 +65,7 @@ int main(){
         caractere = input[indice];
 
     }
+    verificacao_loop(pi);
 
     verificacao_simbolo_no_final(pi);
     

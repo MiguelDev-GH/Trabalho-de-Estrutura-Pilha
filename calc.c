@@ -16,6 +16,8 @@ void push(Pilha* pi, float valor){
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
 
+
+
     novo->valor_simb = 0;
     novo->valor = valor;
 
@@ -29,33 +31,25 @@ void push(Pilha* pi, float valor){
 void push_menos(Pilha* pi, float valor){
     if(pi == NULL) return;
 
+    if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->simb == '-') {
+
+        if ((*pi)->prox == NULL || (*pi)->prox->valor_simb != 0) {
+            
+            No* temp = *pi;
+            *pi = (*pi)->prox;
+            free(temp);
+
+            valor = valor * (-1);
+        }
+    }
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
 
     novo->valor_simb = 0;
     novo->valor = valor;
-
-    if(*pi == NULL) novo->prox = NULL; 
-    else novo->prox = *pi;
-
+    
+    novo->prox = *pi;
     *pi = novo;
-
-    if((*pi)->prox != NULL && (*pi)->prox->simb == '-' && (*pi)->valor_simb == 0){
-
-        No* aux = *pi;
-        while(aux->prox != NULL && aux->valor_simb != 0 && aux->valor_simb != 1){
-            aux = aux->prox;
-        }
-        if(aux->valor_simb == 1){
-            aux = (*pi)->prox;
-            (*pi)->prox = (*pi)->prox->prox;
-            free(aux);
-        }else if(aux->valor_simb == 0){
-            (*pi)->prox->simb = '+';
-        }
-        (*pi)->valor = (*pi)->valor * (-1);
-    }
-
 }
 
 void push_simb(Pilha* pi, char simb, int valor_simb){
@@ -159,16 +153,7 @@ bool ehFechado(Pilha* pi, char c){
         return false;
     }
 }
-/*
-bool ehRaiz(Pilha* pi,char c){
-    if(c >= 'r' || c <= 'R'){
-        push_simb(pi,c,4);
-        return true;
-    }else{
-        return false;
-    }
-}
-*/
+
 bool pop_dos_2_primeiros(Pilha* pi){
     if(pi==NULL) return false;
     
@@ -228,7 +213,8 @@ void addnum(Pilha* pi, int* indice, char input[50]) {
     }
 
     int num_len = (indice_ultimo_digito - indice_inicio) + 1;
-    char input_temp[num_len];
+
+    char input_temp[num_len ]; 
     int indice_input_temp = 0;
 
     for (int i = indice_inicio; i <= indice_ultimo_digito; i++) {
@@ -236,20 +222,9 @@ void addnum(Pilha* pi, int* indice, char input[50]) {
         indice_input_temp++;
     }
     
-
     int num_push = atoi(input_temp);
 
-    int indice_prox = indice_ultimo_digito + 1;
-    while (input[indice_prox] == ' ') {
-        indice_prox++;
-    }
-    char caractere_prox = input[indice_prox]; 
-
-    if (caractere_prox == '^' || caractere_prox == 'r') {
-        push(pi, num_push);
-    } else {
-        push_menos(pi, num_push);
-    }
+    push_menos(pi, (float)num_push); 
 
     *indice = indice_ultimo_digito;
 }
@@ -259,6 +234,11 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     if (pi_calc == NULL || *pi_calc == NULL) return; 
     
     No* aux = *pi_calc;
+
+    if(aux != NULL && aux->prox != NULL && aux->prox->prox == NULL && aux->valor_simb == 0 && aux->prox->valor_simb == 1){
+        printf("EXPRESSAO INVALIDA - numero seguido de simbolo sem nada depois");
+        exit(1);
+    }
 
     while(aux->prox != NULL && aux->prox->prox != NULL) {
         if((aux->prox->simb == '^' || aux->prox->simb == 'r') && aux->valor_simb == 0 && aux->prox->valor_simb == 1 &&
@@ -270,9 +250,22 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             if(aux->prox->simb == '^'){ 
                 aux->valor = pow((double)aux->valor,(double)aux->prox->prox->valor);
             } else if(aux->prox->simb == 'r'){
-                aux->valor = pow((double)aux->valor,1/(double)aux->prox->prox->valor);
+                if(aux->prox->prox->valor<=0){
+                    printf("EXPRESSAO INVALIDA - Nao existe raiz de indice negativo ou zero");
+                    exit(1);
+                }else if(aux->valor<0 && ((int)aux->prox->prox->valor % 2) == 0){
+                    printf("EXPRESSAO INVALIDA - Nao existe raiz de numero negativo e com o indice par");
+                    exit(1);
+                }else if(aux->valor<0 && ((int)aux->prox->prox->valor % 2) != 0){
+
+                    aux->valor = aux->valor * (-1);
+                    aux->valor = pow(aux->valor, 1.0 / (double)aux->prox->prox->valor);
+                    aux->valor = aux->valor * (-1);
+
+                }else{
+                    aux->valor = pow((double)aux->valor,1/(double)aux->prox->prox->valor);
+                }
             }
-            
             aux->prox = delete_num->prox;
 
             free(delete_simb);
@@ -298,7 +291,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
             }else if(aux->prox->simb == '/'){
                 if (aux->prox->prox->valor == 0)
                  {
-                    printf("EXPRESSAO INVALIDA - Nao exite divisao por 0 (Zero)");
+                    printf("EXPRESSAO INVALIDA - Nao existe divisao por 0 (Zero)");
                     exit(1);
                     return;
                 }
@@ -432,11 +425,14 @@ void verificacao(Pilha* pi){
         printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
         exit(1);
 
-    }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
-        (*pi)->valor_simb == 2 &&(*pi)->prox->valor_simb == 1 && (*pi)->prox->prox->valor_simb == 3 ){
+    }
+}
+
+void verificacao_simbolo_sozinho(Pilha* pi){
+    if(*pi != NULL && (*pi)->prox != NULL && (*pi)->prox->prox != NULL &&
+     (*pi)->valor_simb == 3 && (*pi)->prox->valor_simb == 1 && (*pi)->prox->prox->valor_simb == 2){
         printf("EXPRESSAO INVALIDA! - Simbolo sozinho dentro de um parenteses");
         exit(1);
-        
     }
 }
 
@@ -447,3 +443,22 @@ void verificacao_simbolo_no_final(Pilha* pi){
     }
 }
 
+void verificacao_loop(Pilha* pi){
+    if(pi == NULL || *pi == NULL || (*pi)->prox == NULL) return;
+
+    No* aux = *pi;
+
+    while(aux->prox != NULL){
+    if(aux != NULL && aux->prox != NULL &&
+    aux->valor_simb == 0 && aux->prox->valor_simb == 0){
+        printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
+        exit(1);
+
+    }else if(aux != NULL && aux->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 1){
+        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
+        exit(1);
+
+    }
+    aux = aux->prox;
+    }
+}
