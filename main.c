@@ -31,7 +31,7 @@ int main(){
     }
 
     if(existe_num == 0){
-        printf("EXPRESSAO INVALIDA - nenhum numero existente");
+        printf("EXPRESSAO INVALIDA - Nenhum numero existente");
         exit(1);
     }
 

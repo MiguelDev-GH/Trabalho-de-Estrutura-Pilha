@@ -236,7 +236,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     No* aux = *pi_calc;
 
     if(aux != NULL && aux->prox != NULL && aux->prox->prox == NULL && aux->valor_simb == 0 && aux->prox->valor_simb == 1){
-        printf("EXPRESSAO INVALIDA - numero seguido de simbolo sem nada depois");
+        printf("EXPRESSAO INVALIDA - Numero seguido de simbolo sem nada depois");
         exit(1);
     }
 
