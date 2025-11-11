@@ -139,7 +139,7 @@ EXPRESSAO INVALIDA - Nao exite divisao por 0 (Zero)
 ```
 ___
 
-- Se nâo tiver nenhum numero:
+- Se não tiver nenhum numero:
 
 | Exemplo:
 ```
@@ -166,7 +166,7 @@ EXPRESSAO INVALIDA - Nao existe raiz de indice negativo ou zero
 ```
 ___
 
-- Se você tiver tentando calcular a raiz de um numero negativo e indice par:
+- Se você tiver tentando calcular a raiz de um número negativo e indice par:
 
 | Exemplo:
 ```
