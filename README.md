@@ -81,15 +81,6 @@ Resultado = 20
 
 <img src="https://github.com/user-attachments/assets/78658b04-cfba-49f2-95f4-b0deb8fa9525" width='100px'>
 
-⚠️**OBS:** O tratamento de ```()```, ```[]``` e ```{}``` é feito de forma igual, independente se abre usando 1, se pode fechar usando outro dos 3, **por exemplo**:
-
-```
->>> 1 + [1 - (1])
-Expressao escrita de forma CORRETA!
-
-Resultado = 1
-```
-
 ### Algumas entradas irão ser **INVÁLIDADAS** com os seguintes critérios:
 
 - Se tiver o use de caracteres que o programa não reconhece:
@@ -112,12 +103,12 @@ EXPRESSAO INVALIDA! - Dois simbolos em sequencia
 
 ___
 
-- Se houver 2 números posicionados seguidamente sem uma operação no meio:
+- Se houver 2 números ou simbolos posicionados seguidamente sem uma operação no meio:
 
 | Exemplo:
 ```
 >>> 10 20 + 2
-EXPRESSAO INVALIDA! - Dois numeros em sequencia
+EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia
 ```
 
 ___
@@ -145,4 +136,40 @@ ___
 ```
 >>> 10 / 0
 EXPRESSAO INVALIDA - Nao exite divisao por 0 (Zero)
+```
+___
+
+- Se nâo tiver nenhum numero:
+
+| Exemplo:
+```
+>>> ()
+EXPRESSAO INVALIDA - Nenhum numero existente
+```
+___
+
+- Se tiver um numero sozinho seguido por um simbolo:
+
+| Exemplo:
+```
+>>> (5+)
+EXPRESSAO INVALIDA - Numero seguido de simbolo sem nada depois
+```
+___
+
+- Se estiver fazendo raiz com indice igual ou menor que zero:
+
+| Exemplo:
+```
+>>> 10r0
+EXPRESSAO INVALIDA - Nao existe raiz de indice negativo ou zero
+```
+___
+
+- Se você tiver tentando calcular a raiz de um numero negativo e indice par:
+
+| Exemplo:
+```
+>>> (-10)r2
+EXPRESSAO INVALIDA - Nao existe raiz de numero negativo e com o indice par
 ```

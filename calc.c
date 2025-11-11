@@ -236,7 +236,7 @@ void calcularPiCalc(Pilha* pi,Pilha* pi_calc){
     No* aux = *pi_calc;
 
     if(aux != NULL && aux->prox != NULL && aux->prox->prox == NULL && aux->valor_simb == 0 && aux->prox->valor_simb == 1){
-        printf("EXPRESSAO INVALIDA - numero seguido de simbolo sem nada depois");
+        printf("EXPRESSAO INVALIDA - Numero seguido de simbolo sem nada depois");
         exit(1);
     }
 
@@ -418,7 +418,7 @@ void verificacao(Pilha* pi){
 
     if(*pi != NULL && (*pi)->prox != NULL &&
     (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
-        printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia");
         exit(1);
 
     }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
@@ -451,7 +451,7 @@ void verificacao_loop(Pilha* pi){
     while(aux->prox != NULL){
     if(aux != NULL && aux->prox != NULL &&
     aux->valor_simb == 0 && aux->prox->valor_simb == 0){
-        printf("EXPRESSAO INVALIDA! - Dois numeros em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia");
         exit(1);
 
     }else if(aux != NULL && aux->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 1){
