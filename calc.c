@@ -1,5 +1,10 @@
 #include "calc.h"
 
+void limpar_buffer(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
+}
+
 Pilha* criarPilha(){
     Pilha* pi = (Pilha*) malloc(sizeof(Pilha));
     if(pi == NULL) return NULL;

@@ -1,5 +1,7 @@
 #include "calc.c"
 
+char op[2];
+
 int main(){
     char input[50];
     int indice = 0;
@@ -73,6 +75,16 @@ int main(){
     
     printf("Expressao escrita de forma CORRETA!\n");
     imprimirPilhaResultado(pi);
+
+    printf("\nDeseja fazer outro calculo? (Digite > S < para continuar)\n");
+
+    fgets(op,sizeof(op),stdin);
+
+    limpar_buffer();
+
+    if(strcmp(op,"S") == 0 || strcmp(op,"s") == 0){
+        main();
+    }
 
     return 0;
     
