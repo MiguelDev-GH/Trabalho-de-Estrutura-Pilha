@@ -16,7 +16,19 @@ typedef struct No{
 
 typedef struct No* Pilha;
 
+typedef struct NoHistorico{
+    char input[50];
+    float resultado;
+    struct NoHistorico* prox;
+} NoHistorico;
+
+typedef struct NoHistorico* PilhaHistorico;
+
 Pilha* criarPilha();
+PilhaHistorico* criar_pilha_historico();
+void push_historico(PilhaHistorico* pi_hist,char* input, float resultado);
+void mostrar_historico(PilhaHistorico *pi_hist);
+void exec();
 void push(Pilha* pi, float valor);
 void push_menos(Pilha* pi, float valor);
 void push_simb(Pilha* pi, char simb, int valor_simb);
@@ -37,6 +49,5 @@ void verificacao(Pilha* pi);
 void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
-
 
 #endif

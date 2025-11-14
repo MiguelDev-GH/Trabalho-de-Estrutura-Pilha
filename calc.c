@@ -22,7 +22,6 @@ void push(Pilha* pi, float valor){
     if(novo == NULL) return;
 
 
-
     novo->valor_simb = 0;
     novo->valor = valor;
 
@@ -466,4 +465,167 @@ void verificacao_loop(Pilha* pi){
     }
     aux = aux->prox;
     }
+}
+
+void liberar_pilha(Pilha* pi){
+    if(pi == NULL) return;
+
+    No* aux = *pi;
+    No* excluir = aux;
+
+    while(aux != NULL){
+        excluir = aux;
+        aux = aux->prox;
+        free(excluir);
+    }
+    *pi = NULL;
+}
+
+// Funções histórico: Aqui só vai ter funções pro histórico
+
+PilhaHistorico* criar_pilha_historico(){
+    PilhaHistorico* pi_hist = (PilhaHistorico*) malloc(sizeof(PilhaHistorico));
+    if(pi_hist == NULL) return NULL;
+
+    *pi_hist = NULL;
+
+    return pi_hist;
+}
+
+void push_historico(PilhaHistorico* pi_hist,char* input, float resultado){
+    if(pi_hist == NULL) return;
+
+    NoHistorico* novo = malloc(sizeof(NoHistorico));
+    if(novo == NULL) return;
+
+    novo->resultado = resultado;
+    strcpy(novo->input, input);
+
+    if(*pi_hist == NULL) novo->prox = NULL; 
+    else novo->prox = *pi_hist;
+
+    *pi_hist = novo;
+}
+
+void mostrar_historico(PilhaHistorico *pi_hist){
+    if(pi_hist == NULL) return;
+
+    system("cls");
+
+    printf("=---= HISTORICO =---=\n");
+
+    if(*pi_hist == NULL){
+        printf("\nSem calculos ainda!\n");
+        printf("\nAperte ENTER para voltar");
+        getchar();
+        return;
+    }
+
+    NoHistorico* aux = *pi_hist;
+
+    while(aux != NULL){
+        printf("\n>>> %s Resultado: %.2f\n", aux->input, aux->resultado);
+        aux = aux->prox;
+    }
+
+    printf("\nAperte ENTER para voltar");
+    getchar();
+}
+// Cabou as funções sobre o histórico
+
+void exec(char* input,int input_size, Pilha* pi, Pilha* pi_calc, Pilha* pi_verificacao, PilhaHistorico* historico){
+
+    liberar_pilha(pi);
+    liberar_pilha(pi_calc);
+    liberar_pilha(pi_verificacao);
+
+    int indice = 0;
+    int indice_prox = 1;
+
+    char op[2];
+
+    system("cls");
+
+    printf("\nDigite a expressao: \n");
+        printf(">>> ");
+
+        fgets(input,input_size,stdin);
+
+        
+
+        char caractere = input[indice];
+        int existe_num = 0;
+
+        while(caractere != '\n'){
+            
+            if(ehAbrido(pi_verificacao,caractere)){     
+            }else if(ehFechado(pi_verificacao,caractere)){
+                pop_dos_2_primeiros(pi_verificacao);
+            }else if(ehNum(caractere)){
+                existe_num = 1;
+            }
+
+            Caractere_invalido(caractere);
+
+            indice++;
+            indice_prox++;
+            caractere = input[indice];
+
+        }
+
+        if(existe_num == 0){
+            printf("EXPRESSAO INVALIDA - Nenhum numero existente");
+            exit(1);
+        }
+
+        if(*pi_verificacao != NULL){
+            printf("EXPRESSAO INVALIDA - Operacao nao fechada corretamente");
+            exit(1);
+        }
+
+        indice = 0;
+        caractere = input[indice];
+
+        indice = 0;
+        caractere = input[indice];
+
+        while(caractere != '\n'){
+
+            if(ehNum(caractere)){
+                addnum(pi,&indice,input);
+                verificacao(pi);
+            }else if(ehSimbolo(pi,caractere)){
+                verificacao(pi);
+            }else if(ehAbrido(pi,caractere)){
+                verificacao(pi);
+            }else if(ehFechado(pi,caractere)){ 
+                verificacao_simbolo_sozinho(pi);
+                verificacao(pi);
+                InserirPiCalc(pi,pi_calc);
+            }
+
+            indice++;
+            caractere = input[indice];
+
+        }
+        verificacao_loop(pi);
+
+        verificacao_simbolo_no_final(pi);
+        
+        InserirPiCalc(pi,pi_calc);
+        
+        printf("Expressao escrita de forma CORRETA!\n");
+        imprimirPilhaResultado(pi);
+
+        push_historico(historico,input,(*pi)->valor);
+
+        printf("\nDeseja fazer outro calculo? (Digite > S < para continuar)\n");
+
+        fgets(op,sizeof(op),stdin);
+
+        limpar_buffer();
+
+        if(strcmp(op,"S") == 0 || strcmp(op,"s") == 0){
+            exec(input,input_size,pi,pi_calc,pi_verificacao, historico);
+        }
 }
