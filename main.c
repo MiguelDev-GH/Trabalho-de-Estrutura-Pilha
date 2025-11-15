@@ -17,7 +17,7 @@ int main(){
         printf("=---= Calculadora com Pilha =---=\n");
         printf("\n1- Fazer um calculo\n");
         printf("2- Historico\n");
-        printf("3- Transformar em pos fixa\n\n");
+        printf("3- Fazer calculo mostrando detalhes com PILHA\n\n");
         printf("0- Sair\n");
 
         scanf("%d",&opMenu);
@@ -45,6 +45,7 @@ int main(){
     free(pi);
     free(pi_calc);
     free(pi_verificacao);
+    free(historico);
 
     return 0;
     
