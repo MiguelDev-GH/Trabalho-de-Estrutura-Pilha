@@ -2,14 +2,17 @@
 
 char op[2];
 
+
+
 int main(){
+
+    pi = criarPilha();
+    pi_calc = criarPilha();
+    pi_verificacao = criarPilha();
+    historico = criar_pilha_historico();
+
     int opMenu = 0;
     char input[50];
-    Pilha *pi = criarPilha();
-    Pilha *pi_calc = criarPilha();
-    Pilha *pi_verificacao = criarPilha();
-    PilhaHistorico *historico = criar_pilha_historico();
-    
 
     while(1){
         system("cls");
@@ -27,7 +30,11 @@ int main(){
             case 0:
                 return 0;
             case 1:
-                exec(input,sizeof(input),pi,pi_calc,pi_verificacao,historico);
+                system("cls");
+                printf("\nDigite a expressao: \n");
+                printf(">>> ");
+                fgets(input,sizeof(input),stdin);
+                calcular(input,sizeof(input));
                 break;
             case 2:
                 mostrar_historico(historico);
