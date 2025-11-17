@@ -28,7 +28,7 @@ Pilha* criarPilha();
 PilhaHistorico* criar_pilha_historico();
 void push_historico(PilhaHistorico* pi_hist,char* input, float resultado);
 void mostrar_historico(PilhaHistorico *pi_hist);
-void exec();
+void calcular();
 void push(Pilha* pi, float valor);
 void push_menos(Pilha* pi, float valor);
 void push_simb(Pilha* pi, char simb, int valor_simb);
@@ -49,5 +49,10 @@ void verificacao(Pilha* pi);
 void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
+
+Pilha *pi = NULL;
+Pilha *pi_calc = NULL;
+Pilha *pi_verificacao = NULL;
+PilhaHistorico *historico = NULL;
 
 #endif
