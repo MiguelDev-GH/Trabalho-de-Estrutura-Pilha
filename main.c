@@ -6,8 +6,8 @@ char op[2];
 
 int main(){
 
-    pi = criarPilha();
-    pi_calc = criarPilha();
+    pi_num = criarPilha();
+    pi_simb = criarPilha();
     pi_verificacao = criarPilha();
     historico = criar_pilha_historico();
 
@@ -49,8 +49,8 @@ int main(){
             }
     }
 
-    free(pi);
-    free(pi_calc);
+    free(pi_num);
+    free(pi_simb);
     free(pi_verificacao);
     free(historico);
 
