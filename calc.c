@@ -35,16 +35,14 @@ void push(Pilha* pi, float valor){
 void push_menos(Pilha* pi, float valor){
     if(pi == NULL) return;
 
-    if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->simb == '-') {
+    if(*pi != NULL && (*pi)->valor_simb == 1 && (*pi)->simb == '-' && ((*pi)->prox == NULL || (*pi)->prox->valor_simb != 0)) {
 
-        if ((*pi)->prox == NULL || (*pi)->prox->valor_simb != 0) {
-            
             No* temp = *pi;
             *pi = (*pi)->prox;
             free(temp);
 
             valor = valor * (-1);
-        }
+
     }
     No* novo = malloc(sizeof(No));
     if(novo == NULL) return;
@@ -481,7 +479,7 @@ void liberar_pilha(Pilha* pi){
     *pi = NULL;
 }
 
-// Funções histórico: Aqui só vai ter funções pro histórico
+// Funções histórico: Aqui só vai ter funções para o histórico
 
 PilhaHistorico* criar_pilha_historico(){
     PilhaHistorico* pi_hist = (PilhaHistorico*) malloc(sizeof(PilhaHistorico));
@@ -533,10 +531,23 @@ void mostrar_historico(PilhaHistorico *pi_hist){
 }
 // Cabou as funções sobre o histórico
 
+void separar_num_simb(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb){
+    if(pi_num == NULL ||pi_simb == NULL ||pi_verificacao == NULL) return;
+    No* aux = *pi_verificacao;
+    while(aux != NULL){
+        if(aux->valor_simb == 0){
+            push(pi_num,aux->valor);
+        }else{
+            push_simb(pi_simb,aux->simb,aux->valor_simb);
+        }
+        aux = aux->prox;
+    }
+}
+
 void calcular(char* input,int input_size){
 
-    liberar_pilha(pi);
-    liberar_pilha(pi_calc);
+    liberar_pilha(pi_num);
+    liberar_pilha(pi_simb);
     liberar_pilha(pi_verificacao);
 
     int indice = 0;
@@ -584,33 +595,35 @@ void calcular(char* input,int input_size){
 
     while(caractere != '\n'){
 
-        if(ehNum(caractere)){
-            addnum(pi,&indice,input);
-            verificacao(pi);
-        }else if(ehSimbolo(pi,caractere)){
-            verificacao(pi);
-        }else if(ehAbrido(pi,caractere)){
-            verificacao(pi);
-        }else if(ehFechado(pi,caractere)){ 
-            verificacao_simbolo_sozinho(pi);
-            verificacao(pi);
-            InserirPiCalc(pi,pi_calc);
+        if(caractere == ' '){
+            indice++;
+            caractere = input[indice];
+        }else if(ehNum(caractere)){
+            addnum(pi_verificacao,&indice,input);
+            verificacao(pi_verificacao);
+        }else if(ehSimbolo(pi_verificacao,caractere)){
+            verificacao(pi_verificacao);
+        }else if(ehAbrido(pi_verificacao,caractere)){
+            verificacao(pi_verificacao);
+        }else if(ehFechado(pi_verificacao,caractere)){ 
+            verificacao_simbolo_sozinho(pi_verificacao);
+            verificacao(pi_verificacao);
         }
 
         indice++;
         caractere = input[indice];
 
     }
-    verificacao_loop(pi);
+    verificacao_loop(pi_verificacao);
 
-    verificacao_simbolo_no_final(pi);
+    verificacao_simbolo_no_final(pi_verificacao);
     
-    InserirPiCalc(pi,pi_calc);
+    //InserirPiCalc(pi,pi_calc);
     
     printf("Expressao escrita de forma CORRETA!\n");
-    imprimirPilhaResultado(pi);
+    imprimirPilhaResultado(pi_num);
 
-    push_historico(historico,input,(*pi)->valor);
+    push_historico(historico,input,(*pi_num)->valor);
 
     printf("\nDeseja fazer outro calculo? (Digite > S < para continuar)\n");
 

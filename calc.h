@@ -49,9 +49,10 @@ void verificacao(Pilha* pi);
 void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
+void separar_num_simb(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb);
 
-Pilha *pi = NULL;
-Pilha *pi_calc = NULL;
+Pilha *pi_num = NULL;
+Pilha *pi_simb = NULL;
 Pilha *pi_verificacao = NULL;
 PilhaHistorico *historico = NULL;
 
