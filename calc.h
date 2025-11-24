@@ -50,6 +50,7 @@ void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
 void separar_num_simb(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb);
+void realizar_calculo(Pilha* pi_num, Pilha* pi_simb);
 
 Pilha *pi_num = NULL;
 Pilha *pi_simb = NULL;

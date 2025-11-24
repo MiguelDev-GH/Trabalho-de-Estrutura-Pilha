@@ -44,14 +44,9 @@ void push_menos(Pilha* pi, float valor){
             valor = valor * (-1);
 
     }
-    No* novo = malloc(sizeof(No));
-    if(novo == NULL) return;
 
-    novo->valor_simb = 0;
-    novo->valor = valor;
-    
-    novo->prox = *pi;
-    *pi = novo;
+    push(pi,valor);
+
 }
 
 void push_simb(Pilha* pi, char simb, int valor_simb){
@@ -216,7 +211,7 @@ void addnum(Pilha* pi, int* indice, char input[50]) {
 
     int num_len = (indice_ultimo_digito - indice_inicio) + 1;
 
-    char input_temp[num_len ]; 
+    char input_temp[num_len + 1]; 
     int indice_input_temp = 0;
 
     for (int i = indice_inicio; i <= indice_ultimo_digito; i++) {
@@ -420,11 +415,11 @@ void verificacao(Pilha* pi){
 
     if(*pi != NULL && (*pi)->prox != NULL &&
     (*pi)->valor_simb == 0 && (*pi)->prox->valor_simb == 0){
-        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia 1");
         exit(1);
 
     }else if(*pi != NULL && (*pi)->prox != NULL && (*pi)->valor_simb == 1 && (*pi)->prox->valor_simb == 1){
-        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia 1");
         exit(1);
 
     }
@@ -453,11 +448,11 @@ void verificacao_loop(Pilha* pi){
     while(aux->prox != NULL){
     if(aux != NULL && aux->prox != NULL &&
     aux->valor_simb == 0 && aux->prox->valor_simb == 0){
-        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois numeros ou simbolos em sequencia 2");
         exit(1);
 
     }else if(aux != NULL && aux->prox != NULL && aux->valor_simb == 1 && aux->prox->valor_simb == 1){
-        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia");
+        printf("EXPRESSAO INVALIDA! - Dois simbolos em sequencia 2");
         exit(1);
 
     }
@@ -535,13 +530,24 @@ void separar_num_simb(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb){
     if(pi_num == NULL ||pi_simb == NULL ||pi_verificacao == NULL) return;
     No* aux = *pi_verificacao;
     while(aux != NULL){
+        aux = *pi_verificacao;
         if(aux->valor_simb == 0){
             push(pi_num,aux->valor);
+            pop(pi_verificacao);
         }else{
             push_simb(pi_simb,aux->simb,aux->valor_simb);
+            pop(pi_verificacao);
         }
-        aux = aux->prox;
     }
+}
+
+void realizar_calculo(Pilha* pi_num, Pilha* pi_simb){
+    if(pi_num == NULL ||pi_simb == NULL) return;
+
+
+
+
+
 }
 
 void calcular(char* input,int input_size){
@@ -596,8 +602,7 @@ void calcular(char* input,int input_size){
     while(caractere != '\n'){
 
         if(caractere == ' '){
-            indice++;
-            caractere = input[indice];
+            
         }else if(ehNum(caractere)){
             addnum(pi_verificacao,&indice,input);
             verificacao(pi_verificacao);
@@ -612,12 +617,18 @@ void calcular(char* input,int input_size){
 
         indice++;
         caractere = input[indice];
+    
 
     }
     verificacao_loop(pi_verificacao);
 
     verificacao_simbolo_no_final(pi_verificacao);
+
+    imprimirPilha(pi_verificacao);
     
+    separar_num_simb(pi_verificacao,pi_num,pi_simb);
+
+    realizar_calculo(pi_num,pi_simb);
     //InserirPiCalc(pi,pi_calc);
     
     printf("Expressao escrita de forma CORRETA!\n");
