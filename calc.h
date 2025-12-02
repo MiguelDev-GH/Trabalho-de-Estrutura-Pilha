@@ -1,5 +1,3 @@
-#ifndef CALC_H
-#define CALC_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,11 +22,16 @@ typedef struct NoHistorico{
 
 typedef struct NoHistorico* PilhaHistorico;
 
+extern Pilha *pi_num;
+extern Pilha *pi_simb;
+extern Pilha *pi_verificacao;
+extern PilhaHistorico *historico;
+
 Pilha* criarPilha();
 PilhaHistorico* criar_pilha_historico();
-void push_historico(PilhaHistorico* pi_hist,char* input, float resultado);
+void push_historico(PilhaHistorico* pi_hist, char* input, float resultado);
 void mostrar_historico(PilhaHistorico *pi_hist);
-void calcular();
+void calcular(char* input);
 void push(Pilha* pi, float valor);
 void push_menos(Pilha* pi, float valor);
 void push_simb(Pilha* pi, char simb, int valor_simb);
@@ -39,22 +42,12 @@ void imprimirPilhaResultado(Pilha* pi);
 bool ehNum(char c);
 bool ehSimbolo(Pilha* pi, char c);
 bool ehAbrido(Pilha* pi, char c);
-bool ehRaiz(Pilha* pi,char c);
 void Caractere_invalido(char c);
 bool ehFechado(Pilha* pi, char c);
-void addnum(Pilha* pi,int* indice, char input[50]);
-void calcularPiCalc(Pilha* pi,Pilha* pi_calc);
-void InserirPiCalc(Pilha* pi, Pilha* pi_calc);
+void addnum(Pilha* pi, int* indice, char input[50]);
 void verificacao(Pilha* pi);
 void verificacao_simbolo_sozinho(Pilha* pi);
 void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
-void separar_num_simb(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb);
-void realizar_calculo(Pilha* pi_num, Pilha* pi_simb);
-
-Pilha *pi_num = NULL;
-Pilha *pi_simb = NULL;
-Pilha *pi_verificacao = NULL;
-PilhaHistorico *historico = NULL;
-
-#endif
+void liberar_pilha(Pilha* pi);
+void realizar_calculo(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb);
