@@ -69,5 +69,13 @@ int main(){
                 break;
             }
     }
+    
+    liberar_pilha(pi_num);
+    liberar_pilha(pi_simb);
+    liberar_pilha(pi_verificacao);
+    free(pi_num);
+    free(pi_simb);
+    free(pi_verificacao);
+
     return 0;
 }
