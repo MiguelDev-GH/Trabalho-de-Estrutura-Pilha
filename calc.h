@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <math.h>
 
+// Pilha dos calculos
+
 typedef struct No{
     int valor_simb;
     char simb;
@@ -14,6 +16,8 @@ typedef struct No{
 
 typedef struct No* Pilha;
 
+// Pilha do Histórico
+
 typedef struct NoHistorico{
     char input[50];
     float resultado;
@@ -22,18 +26,31 @@ typedef struct NoHistorico{
 
 typedef struct NoHistorico* PilhaHistorico;
 
+// Fila da Margem (Grafo)
+
+typedef struct NoFila{
+    int valor;
+    struct NoFila* prox;
+
+} NoFila;
+
+typedef struct Fila{
+    NoFila* inicio;
+    NoFila* fim;
+} Fila;
+
 // Grafo
 
-typedef struct ElementoGrafo{
+typedef struct NoGrafo{
     int vertice;
-    struct ElementoGrafo *prox;
+    struct NoGrafo *prox;
     
-} ElementoGrafo;
+} NoGrafo;
 
 
 typedef struct Grafo{
     int num_vertices;
-    ElementoGrafo** adj;
+    NoGrafo** adj;
 } Grafo;
 
 extern Pilha *pi_num;

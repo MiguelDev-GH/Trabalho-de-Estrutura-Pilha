@@ -438,13 +438,101 @@ void calcular(char* input){
     }
 }
 
+// Fila
+
+Fila* criar_fila(){
+    Fila* fi = (Fila*) malloc(sizeof(Fila));
+    if(fi == NULL){
+        printf("Erro ao alocar memoria para a fila");
+        return NULL;
+    }
+
+    fi->inicio = NULL;
+    fi->fim = NULL;
+
+    return fi;
+}
+
+void enfileirar(Fila* fi, int valor){
+    if(fi == NULL){
+        printf("Erro ao acessar a fila\n");   
+        return;
+    }
+
+    NoFila* novo = (NoFila*) malloc(sizeof(NoFila));
+    if(novo == NULL){
+        printf("Erro ao alocar memoria do novo elemento\n");
+        return;
+    }
+
+    novo->valor = valor;
+    novo->prox = NULL;
+
+    if(fi->inicio == NULL){
+        fi->inicio = novo;
+    } else {
+        fi->fim->prox = novo;
+    }
+
+    fi->fim = novo;
+}
+
+void desenfileirar(Fila* fi, int valor){
+    if(fi == NULL){
+        printf("Erro ao acessar a fila\n");   
+        return;
+    }
+    
+    if(fi->inicio == NULL){
+        printf("Fila já vazia\n");
+        return;
+    }
+
+    NoFila* remover = fi->inicio;
+
+    fi->inicio = remover->prox;
+
+    free(remover);
+
+}
+
+// Grafo
+
 Grafo* criar_grafo(int num_vertices){
     Grafo* grafo = (Grafo*) malloc(sizeof(Grafo));
+    if(grafo == NULL){
+        printf("Erro ao alocar memoria para o grafo\n");
+        return;
+    }
+
     grafo->num_vertices = num_vertices;
-    grafo->adj = (ElementoGrafo**) malloc(num_vertices * sizeof(Grafo));
+
+    grafo->adj = (NoGrafo**) malloc(num_vertices * sizeof(Grafo));
+    if(grafo->adj == NULL){
+        printf("Erro ao alocar memoria dos adjacentes");
+        return;
+    }
 
     for (int i = 0; i < num_vertices; i++)
         grafo->adj[i] = NULL;
 
     return grafo;
+}
+
+void adicionar_aresta(Grafo* grafo, int origem, int destino){
+    if(grafo == NULL){
+        printf("Erro ao acessar o grafo\n");
+        return;
+    }
+
+    NoGrafo* novo = (NoGrafo*) malloc(sizeof(NoGrafo));
+    if(novo == NULL){
+        printf("Erro ao alocar memoria para a nova aresta\n");
+        return;
+    }
+
+    novo->vertice = destino;
+    novo->prox = grafo->adj[origem];
+    grafo->adj[origem] = novo;
+
 }
