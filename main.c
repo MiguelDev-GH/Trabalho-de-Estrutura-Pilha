@@ -73,7 +73,6 @@ int main(){
     liberar_pilha(pi_num);
     liberar_pilha(pi_simb);
     liberar_pilha(pi_verificacao);
-    liberar_pilha(historico);
     free(pi_num);
     free(pi_simb);
     free(pi_verificacao);

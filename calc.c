@@ -288,15 +288,26 @@ void calcular_topo(Pilha* pi_num, Pilha* pi_simb) {
 
     float res = 0;
 
-    if (op == '+') res = val1 + val2;
-    else if (op == '-') res = val1 - val2;
-    else if (op == '*') res = val1 * val2;
-    else if (op == '/') {
+    if (op == '+'){
+        res = val1 + val2;
+        printf("%.2f + %.2f = %.2f\n",val1,val2,res);
+    }else if (op == '-'){ 
+        res = val1 - val2;
+        printf("%.2f - %.2f = %.2f\n",val1,val2,res);
+    }else if (op == '*'){
+        res = val1 * val2;
+        printf("%.2f * %.2f = %.2f\n",val1,val2,res);
+    }else if (op == '/'){
         if (val2 == 0) { printf("\nERRO: Divisao por zero.\n"); exit(1); }
         res = val1 / val2;
+        printf("%.2f / %.2f = %.2f\n",val1,val2,res);
+    }else if (op == '^'){
+        res = pow(val1, val2);
+        printf("%.2f^%.2f = %.2f\n",val1,val2,res);
+    }else if (op == 'r') {
+        res = pow(val1, 1.0/val2);
+        printf("%.2fr%.2f = %.2f\n",val1,val2,res);
     }
-    else if (op == '^') res = pow(val1, val2);
-    else if (op == 'r') res = pow(val1, 1.0/val2);
 
     push(pi_num, res);
 }
