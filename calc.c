@@ -20,8 +20,11 @@ Pilha* criarPilha(){
 void push(Pilha* pi, float valor){
     if(pi == NULL) return;
     No* novo = malloc(sizeof(No));
-    if(novo == NULL) return;
-
+    if(novo == NULL){
+        printf("Erro ao alocar memoria!\n");
+        return; 
+    }
+        
     novo->valor_simb = 0;
     novo->valor = valor;
     novo->prox = *pi;
@@ -43,7 +46,10 @@ void push_menos(Pilha* pi, float valor){
 void push_simb(Pilha* pi, char simb, int valor_simb){
     if(pi == NULL) return;
     No* novo = malloc(sizeof(No));
-    if(novo == NULL) return;
+    if(novo == NULL){
+        printf("Erro ao alocar memoria!\n");
+        return; 
+    }
 
     novo->valor_simb = valor_simb;
     novo->simb = simb;
@@ -56,6 +62,10 @@ void pop(Pilha* pi){
     No* remover = *pi;
     *pi = remover->prox;
     free(remover);
+    if(remover != NULL){
+        printf("Erro ao desalocar memoria!\n");
+        return; 
+    }
 }
 
 void imprimirPilha(Pilha* pi){
@@ -128,7 +138,15 @@ bool pop_dos_2_primeiros(Pilha* pi){
 
     *pi = delete_extra->prox;
     free(delete);
+    if(delete != NULL){
+        printf("Erro ao desalocar memoria!\n");
+        return; 
+    }
     free(delete_extra);
+    if(delete_extra != NULL){
+        printf("Erro ao desalocar memoria!\n");
+        return; 
+    } 
     return true;
 }
 
