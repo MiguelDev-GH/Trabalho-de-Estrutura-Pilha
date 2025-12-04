@@ -22,6 +22,20 @@ typedef struct NoHistorico{
 
 typedef struct NoHistorico* PilhaHistorico;
 
+// Grafo
+
+typedef struct ElementoGrafo{
+    int vertice;
+    struct ElementoGrafo *prox;
+    
+} ElementoGrafo;
+
+
+typedef struct Grafo{
+    int num_vertices;
+    ElementoGrafo** adj;
+} Grafo;
+
 extern Pilha *pi_num;
 extern Pilha *pi_simb;
 extern Pilha *pi_verificacao;

@@ -62,6 +62,7 @@ void pop(Pilha* pi){
     No* remover = *pi;
     *pi = remover->prox;
     free(remover);
+    remover = NULL;
     if(remover != NULL){
         printf("Erro ao desalocar memoria!\n");
         return; 
@@ -140,12 +141,12 @@ bool pop_dos_2_primeiros(Pilha* pi){
     free(delete);
     if(delete != NULL){
         printf("Erro ao desalocar memoria!\n");
-        return; 
+        return false; 
     }
     free(delete_extra);
     if(delete_extra != NULL){
         printf("Erro ao desalocar memoria!\n");
-        return; 
+        return false;
     } 
     return true;
 }
@@ -435,4 +436,15 @@ void calcular(char* input){
         imprimirPilhaResultado(pi_num);
         push_historico(historico, input, (*pi_num)->valor);
     }
+}
+
+Grafo* criar_grafo(int num_vertices){
+    Grafo* grafo = (Grafo*) malloc(sizeof(Grafo));
+    grafo->num_vertices = num_vertices;
+    grafo->adj = (ElementoGrafo**) malloc(num_vertices * sizeof(Grafo));
+
+    for (int i = 0; i < num_vertices; i++)
+        grafo->adj[i] = NULL;
+
+    return grafo;
 }
