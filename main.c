@@ -12,12 +12,15 @@ int main(){
     int opMenu = 0;
     char input[50];
 
-    while(1){
+    int mainLoop = true;
+
+    while(mainLoop){
         system("cls");
 
         printf("=---= Calculadora com Pilha =---=\n");
         printf("\n1- Fazer um calculo\n");
-        printf("2- Historico\n");
+        printf("2- Calcular com BFS ou DFS\n");
+        printf("3- Historico\n");
         printf("0- Sair\n");
         printf(">>> ");
 
@@ -26,10 +29,9 @@ int main(){
 
         switch (opMenu){
             case 0:
-                liberar_pilha(pi_num); free(pi_num);
-                liberar_pilha(pi_simb); free(pi_simb);
-                liberar_pilha(pi_verificacao); free(pi_verificacao);
-                return 0;
+                mainLoop = false;
+                break;
+            
             case 1:
                 while(true){
                     system("cls");
@@ -60,13 +62,30 @@ int main(){
 
                 }
                 break;
+
             case 2:
+                system("cls");
+
+                printf("Escolha a forma de calcular: \n\n");
+                printf("1- BFS (Breadth-First Search)\n");
+                printf("2- DFS (Depth-First Search)\n\n");
+
+                fgets(op,sizeof(op),stdin);
+
+                // Aqui tem que adicionar as coisa
+
+
+                break;
+
+            case 3:
                 mostrar_historico(historico);
                 break;
+
             default:
                 printf("Opcao invalida.\n");
                 getchar();
                 break;
+
             }
     }
 
@@ -78,5 +97,7 @@ int main(){
     free(pi_verificacao);
     free(historico);
 
+    system("cls");
+    printf("\nPrograma finalizado\n\n");
     return 0;
 }
