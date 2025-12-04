@@ -47,8 +47,6 @@ int main(){
                 getchar();
                 break;
             }
-
-            
     }
 
     free(pi_num);
