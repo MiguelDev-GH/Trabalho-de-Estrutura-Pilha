@@ -259,7 +259,7 @@ void mostrar_historico(PilhaHistorico *pi_hist){
     } else {
         NoHistorico* aux = *pi_hist;
         while(aux != NULL){
-            printf(">>> %s = %.2f\n", aux->input, aux->resultado);
+            printf("\n>>> %s = %.2f\n", aux->input, aux->resultado);
             aux = aux->prox;
         }
     }
@@ -502,7 +502,7 @@ Grafo* criar_grafo(int num_vertices){
     Grafo* grafo = (Grafo*) malloc(sizeof(Grafo));
     if(grafo == NULL){
         printf("Erro ao alocar memoria para o grafo\n");
-        return;
+        return NULL;
     }
 
     grafo->num_vertices = num_vertices;
@@ -510,7 +510,7 @@ Grafo* criar_grafo(int num_vertices){
     grafo->adj = (NoGrafo**) malloc(num_vertices * sizeof(Grafo));
     if(grafo->adj == NULL){
         printf("Erro ao alocar memoria dos adjacentes");
-        return;
+        return NULL;
     }
 
     for (int i = 0; i < num_vertices; i++)
@@ -525,6 +525,8 @@ void adicionar_aresta(Grafo* grafo, int origem, int destino){
         return;
     }
 
+    // Aresta de ida:
+
     NoGrafo* novo = (NoGrafo*) malloc(sizeof(NoGrafo));
     if(novo == NULL){
         printf("Erro ao alocar memoria para a nova aresta\n");
@@ -534,5 +536,17 @@ void adicionar_aresta(Grafo* grafo, int origem, int destino){
     novo->vertice = destino;
     novo->prox = grafo->adj[origem];
     grafo->adj[origem] = novo;
+
+    // Aresta de volta:
+
+    NoGrafo* novo2 = (NoGrafo*) malloc(sizeof(NoGrafo));
+    if(novo2 == NULL){
+        printf("Erro ao alocar memoria para a nova aresta\n");
+        return;
+    }
+
+    novo2->vertice = origem;
+    novo2->prox = grafo->adj[destino];
+    grafo->adj[destino] = novo2;
 
 }

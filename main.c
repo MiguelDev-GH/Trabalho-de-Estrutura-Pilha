@@ -72,8 +72,44 @@ int main(){
 
                 fgets(op,sizeof(op),stdin);
 
-                // Aqui tem que adicionar as coisa
+                switch (atoi(op)){
+                    case 1:
+                        // BFS
+                        system("cls");
+                        printf("\nDigite a expressao: \n");
+                        printf(">>> ");
+                        fgets(input,sizeof(input),stdin);
 
+                        calcular(input);
+
+                        printf("\nPressione ENTER para voltar ao menu\n");
+                        getchar();
+                        
+                        break;
+
+                    case 2:
+                        // DFS
+                        system("cls");
+                        printf("\nDigite a expressao: \n");
+                        printf(">>> ");
+                        fgets(input,sizeof(input),stdin);
+
+                        calcular(input);
+
+                        printf("\nPressione ENTER para voltar ao menu\n");
+                        getchar();
+                        
+                        break;
+                    
+                    
+                    default:
+                        system("cls");
+                        printf("Digite um opção válida\n");
+                        printf("\nPressione ENTER para voltar ao menu...");
+                        getchar(); 
+                        break;
+                    
+                }
 
                 break;
 
