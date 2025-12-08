@@ -438,115 +438,141 @@ void calcular(char* input){
     }
 }
 
-// Fila
-
-Fila* criar_fila(){
-    Fila* fi = (Fila*) malloc(sizeof(Fila));
-    if(fi == NULL){
-        printf("Erro ao alocar memoria para a fila");
-        return NULL;
-    }
-
-    fi->inicio = NULL;
-    fi->fim = NULL;
-
-    return fi;
+GrafoNo* criar_grafo_operador(char op) {
+    GrafoNo* novo = (GrafoNo*)malloc(sizeof(GrafoNo));
+    if(!novo) return NULL;
+    novo->eh_operador = 1;
+    novo->op = op;
+    novo->valor = 0;
+    novo->esq = NULL;
+    novo->dir = NULL;
+    return novo;
 }
 
-void enfileirar(Fila* fi, int valor){
-    if(fi == NULL){
-        printf("Erro ao acessar a fila\n");   
-        return;
-    }
-
-    NoFila* novo = (NoFila*) malloc(sizeof(NoFila));
-    if(novo == NULL){
-        printf("Erro ao alocar memoria do novo elemento\n");
-        return;
-    }
-
+GrafoNo* criar_grafo_numero(float valor) {
+    GrafoNo* novo = (GrafoNo*)malloc(sizeof(GrafoNo));
+    if(!novo) return NULL;
+    novo->eh_operador = 0;
+    novo->op = '\0';
     novo->valor = valor;
-    novo->prox = NULL;
-
-    if(fi->inicio == NULL){
-        fi->inicio = novo;
-    } else {
-        fi->fim->prox = novo;
-    }
-
-    fi->fim = novo;
+    novo->esq = NULL;
+    novo->dir = NULL;
+    return novo;
 }
 
-void desenfileirar(Fila* fi, int valor){
-    if(fi == NULL){
-        printf("Erro ao acessar a fila\n");   
-        return;
+int encontrar_operador_principal(char* expr, int inicio, int fim) {
+    int parenteses = 0;
+    int pos_menor_prio = -1;
+    int menor_prio = 99; 
+
+    for (int i = fim; i >= inicio; i--) {
+        char c = expr[i];
+        
+        if (c == ')' || c == ']' || c == '}') parenteses++;
+        else if (c == '(' || c == '[' || c == '{') parenteses--;
+        else if (parenteses == 0) {
+            int prio_atual = -1;
+            if (c == '+' || c == '-') prio_atual = 1;
+            else if (c == '*' || c == '/') prio_atual = 2;
+            else if (c == '^' || c == 'r') prio_atual = 3;
+
+            if (prio_atual != -1 && prio_atual < menor_prio) {
+                menor_prio = prio_atual;
+                pos_menor_prio = i;
+            }
+        }
     }
+    return pos_menor_prio;
+}
+
+GrafoNo* construir_grafo_expressao(char* expr, int inicio, int fim) {
+    while (inicio <= fim && (expr[inicio] == ' ' || expr[inicio] == '(')) {
+        if (expr[inicio] == ' ') { inicio++; continue; }
+        
+        int p = 0;
+        int fecha_no_fim = 0;
+        for(int i=inicio; i<=fim; i++){
+            if(expr[i]=='(') p++;
+            if(expr[i]==')') p--;
+            if(p==0 && i==fim) fecha_no_fim = 1;
+            if(p==0 && i<fim) { fecha_no_fim = 0; break; } 
+        }
+        
+        if(fecha_no_fim) { inicio++; fim--; } 
+        else break;
+    }
+    while (fim >= inicio && (expr[fim] == ' ' || expr[fim] == ')')) {
+        if(expr[fim] == ' ') fim--;
+        else break;
+    }
+
+    if (inicio > fim) return NULL;
+
+    int pos_op = encontrar_operador_principal(expr, inicio, fim);
+
+    if (pos_op == -1) {
+        char buffer[50];
+        int k = 0;
+        for (int i = inicio; i <= fim; i++) buffer[k++] = expr[i];
+        buffer[k] = '\0';
+        return criar_grafo_numero(atof(buffer));
+    }
+
+    GrafoNo* no = criar_grafo_operador(expr[pos_op]);
+    no->esq = construir_grafo_expressao(expr, inicio, pos_op - 1);
+    no->dir = construir_grafo_expressao(expr, pos_op + 1, fim);
     
-    if(fi->inicio == NULL){
-        printf("Fila já vazia\n");
-        return;
-    }
-
-    NoFila* remover = fi->inicio;
-
-    fi->inicio = remover->prox;
-
-    free(remover);
-
+    return no;
 }
 
-// Grafo
+float calcular_grafo_dfs(GrafoNo* raiz) {
+    if (!raiz) return 0;
 
-Grafo* criar_grafo(int num_vertices){
-    Grafo* grafo = (Grafo*) malloc(sizeof(Grafo));
-    if(grafo == NULL){
-        printf("Erro ao alocar memoria para o grafo\n");
-        return NULL;
+    if (!raiz->eh_operador) {
+        return raiz->valor;
     }
 
-    grafo->num_vertices = num_vertices;
+    float val_esq = calcular_grafo_dfs(raiz->esq);
+    float val_dir = calcular_grafo_dfs(raiz->dir);
+    float res = 0;
 
-    grafo->adj = (NoGrafo**) malloc(num_vertices * sizeof(Grafo));
-    if(grafo->adj == NULL){
-        printf("Erro ao alocar memoria dos adjacentes");
-        return NULL;
+    printf("DFS Resolvendo: %.2f %c %.2f\n", val_esq, raiz->op, val_dir);
+
+    switch (raiz->op) {
+        case '+': res = val_esq + val_dir; break;
+        case '-': res = val_esq - val_dir; break;
+        case '*': res = val_esq * val_dir; break;
+        case '/': res = (val_dir != 0) ? val_esq / val_dir : 0; break;
+        case '^': res = pow(val_esq, val_dir); break;
+        case 'r': res = pow(val_esq, 1.0/val_dir); break;
     }
-
-    for (int i = 0; i < num_vertices; i++)
-        grafo->adj[i] = NULL;
-
-    return grafo;
+    return res;
 }
 
-void adicionar_aresta(Grafo* grafo, int origem, int destino){
-    if(grafo == NULL){
-        printf("Erro ao acessar o grafo\n");
-        return;
+void mostrar_grafo_bfs(GrafoNo* raiz) {
+    if (!raiz) return;
+    
+    GrafoNo* fila[100];
+    int inicio = 0, fim = 0;
+
+    fila[fim++] = raiz;
+    
+    printf("\n--- Ordem dos Elementos (BFS/Niveis) ---\n");
+    while (inicio < fim) {
+        GrafoNo* atual = fila[inicio++];
+        
+        if (!atual->eh_operador) printf("[%.2f] ", atual->valor);
+        else printf("[%c] ", atual->op);
+
+        if (atual->esq) fila[fim++] = atual->esq;
+        if (atual->dir) fila[fim++] = atual->dir;
     }
+    printf("\n----------------------------------------\n");
+}
 
-    // Aresta de ida:
-
-    NoGrafo* novo = (NoGrafo*) malloc(sizeof(NoGrafo));
-    if(novo == NULL){
-        printf("Erro ao alocar memoria para a nova aresta\n");
-        return;
-    }
-
-    novo->vertice = destino;
-    novo->prox = grafo->adj[origem];
-    grafo->adj[origem] = novo;
-
-    // Aresta de volta:
-
-    NoGrafo* novo2 = (NoGrafo*) malloc(sizeof(NoGrafo));
-    if(novo2 == NULL){
-        printf("Erro ao alocar memoria para a nova aresta\n");
-        return;
-    }
-
-    novo2->vertice = origem;
-    novo2->prox = grafo->adj[destino];
-    grafo->adj[destino] = novo2;
-
+void liberar_grafo(GrafoNo* raiz) {
+    if (!raiz) return;
+    liberar_grafo(raiz->esq);
+    liberar_grafo(raiz->dir);
+    free(raiz);
 }

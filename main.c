@@ -17,9 +17,9 @@ int main(){
     while(mainLoop){
         system("cls");
 
-        printf("=---= Calculadora com Pilha =---=\n");
-        printf("\n1- Fazer um calculo\n");
-        printf("2- Calcular com BFS ou DFS\n");
+        printf("=---= Calculadora com Pilha e Grafo =---=\n");
+        printf("\n1- Fazer um calculo (Pilha)\n");
+        printf("2- Calcular com Grafo (BFS/DFS)\n");
         printf("3- Historico\n");
         printf("0- Sair\n");
         printf(">>> ");
@@ -66,41 +66,56 @@ int main(){
             case 2:
                 system("cls");
 
-                printf("Escolha a forma de calcular: \n\n");
-                printf("1- BFS (Breadth-First Search)\n");
-                printf("2- DFS (Depth-First Search)\n\n");
+                printf("Escolha a forma de calcular com Grafo: \n\n");
+                printf("1- BFS (Breadth-First Search - Visualizar Niveis)\n");
+                printf("2- DFS (Depth-First Search - Calcular)\n\n");
 
                 fgets(op,sizeof(op),stdin);
 
                 switch (atoi(op)){
                     case 1:
-                        // BFS
                         system("cls");
                         printf("\nDigite a expressao: \n");
                         printf(">>> ");
                         fgets(input,sizeof(input),stdin);
+                        input[strcspn(input, "\n")] = 0;
 
-                        calcular(input);
+                        GrafoNo* grafoBFS = construir_grafo_expressao(input, 0, strlen(input)-1);
+                        if(grafoBFS) {
+                            mostrar_grafo_bfs(grafoBFS);
+                            float res = calcular_grafo_dfs(grafoBFS); 
+                            printf("\n>>> Resultado Final: %.2f\n", res);
+                            liberar_grafo(grafoBFS);
+                        } else {
+                            printf("Erro ao construir grafo.\n");
+                        }
 
                         printf("\nPressione ENTER para voltar ao menu\n");
                         getchar();
-                        
                         break;
 
                     case 2:
-                        // DFS
                         system("cls");
                         printf("\nDigite a expressao: \n");
                         printf(">>> ");
                         fgets(input,sizeof(input),stdin);
+                        input[strcspn(input, "\n")] = 0;
 
-                        calcular(input);
+                        GrafoNo* grafoDFS = construir_grafo_expressao(input, 0, strlen(input)-1);
+                        if(grafoDFS) {
+                            printf("\n--- Passo a Passo DFS ---\n");
+                            float res = calcular_grafo_dfs(grafoDFS);
+                            printf("-------------------------\n");
+                            printf("\n>>> Resultado Final: %.2f\n", res);
+                            if(historico) push_historico(historico, input, res);
+                            liberar_grafo(grafoDFS);
+                        } else {
+                            printf("Erro ao construir grafo.\n");
+                        }
 
                         printf("\nPressione ENTER para voltar ao menu\n");
                         getchar();
-                        
                         break;
-                    
                     
                     default:
                         system("cls");
@@ -108,9 +123,7 @@ int main(){
                         printf("\nPressione ENTER para voltar ao menu...");
                         getchar(); 
                         break;
-                    
                 }
-
                 break;
 
             case 3:

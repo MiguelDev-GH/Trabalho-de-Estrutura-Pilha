@@ -1,11 +1,11 @@
+#ifndef CALC_H
+#define CALC_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-
-// Pilha dos calculos
 
 typedef struct No{
     int valor_simb;
@@ -16,8 +16,6 @@ typedef struct No{
 
 typedef struct No* Pilha;
 
-// Pilha do Histórico
-
 typedef struct NoHistorico{
     char input[50];
     float resultado;
@@ -26,12 +24,9 @@ typedef struct NoHistorico{
 
 typedef struct NoHistorico* PilhaHistorico;
 
-// Fila da Margem (Grafo)
-
 typedef struct NoFila{
     int valor;
     struct NoFila* prox;
-
 } NoFila;
 
 typedef struct Fila{
@@ -39,19 +34,14 @@ typedef struct Fila{
     NoFila* fim;
 } Fila;
 
-// Grafo
-
-typedef struct NoGrafo{
-    int vertice;
-    struct NoGrafo *prox;
-    
-} NoGrafo;
-
-
-typedef struct Grafo{
-    int num_vertices;
-    NoGrafo** adj;
-} Grafo;
+typedef struct GrafoNo {
+    int id;
+    int eh_operador; 
+    char op;
+    float valor;
+    struct GrafoNo* esq; 
+    struct GrafoNo* dir; 
+} GrafoNo;
 
 extern Pilha *pi_num;
 extern Pilha *pi_simb;
@@ -82,3 +72,12 @@ void verificacao_simbolo_no_final(Pilha* pi);
 void verificacao_loop(Pilha* pi);
 void liberar_pilha(Pilha* pi);
 void realizar_calculo(Pilha* pi_verificacao, Pilha* pi_num, Pilha* pi_simb);
+
+GrafoNo* criar_grafo_operador(char op);
+GrafoNo* criar_grafo_numero(float valor);
+GrafoNo* construir_grafo_expressao(char* expr, int inicio, int fim);
+float calcular_grafo_dfs(GrafoNo* raiz);
+void mostrar_grafo_bfs(GrafoNo* raiz);
+void liberar_grafo(GrafoNo* raiz);
+
+#endif
