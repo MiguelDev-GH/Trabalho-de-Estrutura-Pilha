@@ -237,7 +237,7 @@ PilhaHistorico* criar_pilha_historico(){
     return pi_hist;
 }
 
-void push_historico(PilhaHistorico* pi_hist, char* input, float resultado){
+void push_historico(PilhaHistorico* pi_hist, char* input, float resultado, char* tipoDeCalc){
     if(pi_hist == NULL) return;
     NoHistorico* novo = malloc(sizeof(NoHistorico));
     if(novo == NULL) return;
@@ -245,7 +245,9 @@ void push_historico(PilhaHistorico* pi_hist, char* input, float resultado){
     novo->resultado = resultado;
     size_t len = strlen(input);
     if(len > 0 && input[len-1] == '\n') input[len-1] = '\0';
-    
+
+    strcpy(novo->tipoDeCalculo, tipoDeCalc);
+
     strcpy(novo->input, input);
     novo->prox = *pi_hist;
     *pi_hist = novo;
@@ -259,7 +261,7 @@ void mostrar_historico(PilhaHistorico *pi_hist){
     } else {
         NoHistorico* aux = *pi_hist;
         while(aux != NULL){
-            printf("\n>>> %s = %.2f\n", aux->input, aux->resultado);
+            printf("\n>>> %s (%s) = %.2f\n", aux->input,aux->tipoDeCalculo, aux->resultado);
             aux = aux->prox;
         }
     }
@@ -434,7 +436,7 @@ void calcular(char* input){
     
     if (*pi_num != NULL) {
         imprimirPilhaResultado(pi_num);
-        push_historico(historico, input, (*pi_num)->valor);
+        push_historico(historico, input, (*pi_num)->valor, "Pilha");
     }
 }
 

@@ -19,6 +19,7 @@ typedef struct No* Pilha;
 typedef struct NoHistorico{
     char input[50];
     float resultado;
+    char tipoDeCalculo[5];
     struct NoHistorico* prox;
 } NoHistorico;
 
@@ -50,7 +51,7 @@ extern PilhaHistorico *historico;
 
 Pilha* criarPilha();
 PilhaHistorico* criar_pilha_historico();
-void push_historico(PilhaHistorico* pi_hist, char* input, float resultado);
+void push_historico(PilhaHistorico* pi_hist, char* input, float resultado, char* tipoDeCalc);
 void mostrar_historico(PilhaHistorico *pi_hist);
 void calcular(char* input);
 void push(Pilha* pi, float valor);

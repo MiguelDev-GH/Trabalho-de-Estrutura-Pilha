@@ -85,6 +85,7 @@ int main(){
                             mostrar_grafo_bfs(grafoBFS);
                             float res = calcular_grafo_dfs(grafoBFS); 
                             printf("\n>>> Resultado Final: %.2f\n", res);
+                            push_historico(historico, input, res, "BFS");
                             liberar_grafo(grafoBFS);
                         } else {
                             printf("Erro ao construir grafo.\n");
@@ -107,7 +108,7 @@ int main(){
                             float res = calcular_grafo_dfs(grafoDFS);
                             printf("-------------------------\n");
                             printf("\n>>> Resultado Final: %.2f\n", res);
-                            if(historico) push_historico(historico, input, res);
+                            push_historico(historico, input, res, "DFS");
                             liberar_grafo(grafoDFS);
                         } else {
                             printf("Erro ao construir grafo.\n");
